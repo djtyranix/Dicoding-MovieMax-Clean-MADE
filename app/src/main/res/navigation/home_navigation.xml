@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.nixstudio.moviemax.views.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_movieFragment"
+            app:destination="@id/movieFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_homeFragment_to_tvShowsFragment"
+            app:destination="@id/tvShowsFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsActivity"
+            app:destination="@id/settingsActivity"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_homeFragment_to_favoriteFragment"
+            app:destination="@id/favoriteFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_homeFragment_to_itemDetailFragment"
+            app:destination="@id/itemDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieFragment"
+        android:name="com.nixstudio.moviemax.views.movie.MovieFragment"
+        android:label="movie_fragment"
+        tools:layout="@layout/movie_fragment">
+        <action
+            android:id="@+id/action_movieFragment_to_itemDetailFragment"
+            app:destination="@id/itemDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/tvShowsFragment"
+        android:name="com.nixstudio.moviemax.views.tvshows.TvShowsFragment"
+        android:label="tv_shows_fragment"
+        tools:layout="@layout/tv_shows_fragment">
+        <action
+            android:id="@+id/action_tvShowsFragment_to_itemDetailFragment"
+            app:destination="@id/itemDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <activity
+        android:id="@+id/settingsActivity"
+        android:name="com.nixstudio.moviemax.views.settings.SettingsActivity"
+        android:label="SettingsActivity" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.nixstudio.moviemax.views.search.SearchFragment"
+        android:label="search_fragment"
+        tools:layout="@layout/search_fragment">
+        <argument
+            android:name="query"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_searchFragment_to_itemDetailFragment"
+            app:destination="@id/itemDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.nixstudio.moviemax.views.favorite.FavoriteFragment"
+        android:label="favorite_fragment"
+        tools:layout="@layout/favorite_fragment">
+        <action
+            android:id="@+id/action_favoriteFragment_to_itemDetailFragment"
+            app:destination="@id/itemDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/itemDetailFragment"
+        android:name="com.nixstudio.moviemax.views.detail.ItemDetailFragment"
+        android:label="item_detail_fragment"
+        tools:layout="@layout/item_detail_fragment" >
+        <argument
+            android:name="movie_entity"
+            app:argType="com.nixstudio.moviemax.data.sources.remote.DiscoverMovieResultsItem"
+            app:nullable="true" />
+        <argument
+            android:name="tv_shows_entity"
+            app:argType="com.nixstudio.moviemax.data.sources.remote.DiscoverTvResultsItem"
+            app:nullable="true" />
+    </fragment>
+</navigation>

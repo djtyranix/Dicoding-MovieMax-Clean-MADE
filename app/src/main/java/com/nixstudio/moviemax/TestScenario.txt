@@ -1,0 +1,75 @@
+-----------------------------------------------------
+Usecase Test Scenario
+-----------------------------------------------------
+
+1a. Pengujian Melihat Detail Film
+    Steps:
+        1. Membuka Aplikasi
+        2. Tekan salah satu poster film
+        3. Lihat detail film
+
+1b. Pengujian Melihat Semua Film -> Detil Film
+        1. Membuka Aplikasi
+        2. Tekan see all di movies
+        3. Lihat list film
+        4. Pilih salah satu dan lihat detil film
+
+2a. Pengujian Melihat Detail TV Shows dari home
+    Steps:
+        1. Membuka Aplikasi
+        2. Tekan salah satu poster tv shows
+        3. Lihat detail tv shows
+
+2b. Pengujian Melihat Semua TV Shows -> Detil TV Shows
+    Steps:
+        1. Membuka Aplikasi
+        2. Tekan see all di TV Shows
+        3. Lihat list TV Shows
+        4. Pilih salah satu dan lihat detil film
+
+3.  Pengujian Melihat Detail TV Show/Film dari list Trending
+    Steps:
+        1. Membuka Aplikasi
+        2. Tekan salah satu poster pada list trending
+        3. Lihat detail item (TV Show/Film)
+
+4a. Pengujian Search dengan Query -> Detil Movie / TV Shows
+    Steps:
+        1. Membuka Aplikasi
+        2. Masukkan query pada Searchbar
+        3. Lihat Hasil Search, cocokkan title Action bar dengan Query
+        4. Tekan salah satu hasil pencarian
+        5. Lihat detail item (TV Show/Movie)
+
+4b. Pengujian Search dengan Query -> Pencarian Kosong
+    Steps:
+        1. Membuka Aplikasi
+        2. Masukkan query pada Searchbar
+        3. Lihat Hasil Search, cocokkan title Action bar dengan Query
+        4. Lihat apakah informasi nothing found muncul
+
+5a. Pengujian Menambahkan Favorit
+    Steps:
+        1. Membuka Aplikasi
+        2. Tekan salah satu poster pada salah satu list di home
+        3. Lihat detil item
+        4. Tekan tombol favorit
+        5. Tekan back
+        6. Tekan tombol favorit pada home
+        7. Tekan data yang ada
+        8. Match apakah data sama dengan yang awal
+
+5b. Pengujian Menghapus Favorit
+    Steps:
+        1. Membuka Aplikasi
+        2. Tekan salah satu poster pada salah satu list di home
+        3. Lihat detil item
+        4. Tekan tombol favorit
+        5. Tekan back
+        6. Tekan tombol favorit pada home
+        7. Tekan data yang ada
+        8. Tekan tombol favorit
+        9. Tekan back
+        10. Tekan tombol favorit pada home
+        11. Tekan data yang ada
+        12. Lihat apakah informasi nothing found muncul

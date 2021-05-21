@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Movie Max</string>
+    <string name="see_all">Lihat semua</string>
+    <string name="movies">Film</string>
+    <string name="tv_shows">Serial TV</string>
+    <string name="exit_confirmation">Tekan sekali lagi untuk keluar</string>
+    <string name="all_movies">Daftar Film</string>
+    <string name="all_tv_shows">Daftar Serial TV</string>
+    <string name="setting">Pengaturan</string>
+    <string name="title_activity_settings">Pengaturan</string>
+    <string name="language_change_desc">Ubah bahasa dari pengaturan sistem</string>
+    <string name="language_header">Bahasa</string>
+    <string name="language_option">Pilih Bahasa</string>
+    <string name="poster">poster</string>
+    <string name="test_text">Test Text</string>
+    <string name="dummy_title">Godzilla vs. Kong</string>
+
+    <string name="lorem_ipsum">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu arcu vel enim vehicula congue. Phasellus a convallis ante, sit amet mattis nulla. Cras malesuada feugiat lorem id malesuada. In orci est, tristique quis malesuada sit amet, vulputate sed nunc. Donec eget tortor sem. Sed eu pharetra justo, at porttitor lacus. In fringilla suscipit ligula, ac eleifend lorem volutpat quis. Maecenas laoreet, ex nec viverra tempus, lectus nulla fringilla purus, sed venenatis diam arcu at leo.
+    </string>
+    <string name="playtime_season_title_dummy">PLAYTIME/SEASON</string>
+    <string name="dummy_playtime">01:53:00</string>
+    <string name="dummy_genre">Aksi</string>
+    <string name="dummy_year">2021</string>
+    <string name="dummy_genre_title">GENRE</string>
+    <string name="dummy_overview_title">GAMBARAN</string>
+    <string name="playtime">WAKTU MAIN</string>
+    <string name="season">SEASON</string>
+    <string name="year_of_release">TANGGAL RILIS</string>
+    <string name="share">Share</string>
+    <string name="search_hint">Film, Serial</string>
+    <string name="trending">Trending Hari Ini</string>
+    <string name="search_header">Cari</string>
+    <string name="minutes">%1$s menit</string>
+    <string name="backdrop">Backdrop</string>
+    <string name="placeholder_title">Here is a title placeholder</string>
+    <string name="search_result_header">Hasil Pencarian: %1$s</string>
+    <string name="query_empty_warning">Kolom tidak boleh kosong!</string>
+    <string name="search_empty">Tidak ditemukan.</string>
+    <string name="favorite">Favorit</string>
+    <string name="rating">PENILAIAN</string>
+    <string name="dummy_rating">6.9 / 10</string>
+    <string name="cast">PEMAIN</string>
+    <string name="author">djtyranix</string>
+    <string name="reviews">ULASAN</string>
+    <string name="no_reviews">Tidak ada ulasan ditemukan.</string>
+    <string name="theme">Theme</string>
+    <string name="dark_mode_summary">Aktifkan mode gelap</string>
+    <string name="dark_mode">Mode Gelap</string>
+    <string name="dark_mode_isenabled">Mode gelap %1$s</string>
+    <string name="enabled">aktif</string>
+    <string name="disabled">nonaktif</string>
+    <string name="rating_value">%1$s / 10</string>
+    <string name="no_cast">Tidak ada informasi pemeran.</string>
+    <string name="fav_add_success">Item berhasil ditambahkan ke favorit.</string>
+    <string name="fav_del_success">item berhasil dihapus dari favorit.</string>
+    <string name="your_favorites">Your Favorites</string>
+    <string name="dark_mode_summary_off">Matikan mode gelap</string>
+
+    <string-array name="sort_category">
+        <item>Semua</item>
+        <item>Film</item>
+        <item>Serial</item>
+    </string-array>
+</resources>
