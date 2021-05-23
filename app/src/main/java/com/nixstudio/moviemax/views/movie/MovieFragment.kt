@@ -12,9 +12,11 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.nixstudio.moviemax.data.sources.remote.DiscoverMovieResultsItem
 import com.nixstudio.moviemax.databinding.MovieFragmentBinding
+import com.nixstudio.moviemax.domain.model.Movie
 import com.nixstudio.moviemax.utils.EspressoIdlingResource
 import com.nixstudio.moviemax.viewmodels.MovieViewModel
 import com.nixstudio.moviemax.views.MainActivity
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -42,32 +44,34 @@ class MovieFragment : Fragment() {
             }
 
             viewAdapter.setOnItemClickCallback(object : MovieAdapter.OnItemClickCallback {
-                override fun onItemClicked(data: DiscoverMovieResultsItem) {
+                override fun onItemClicked(data: Movie) {
                     showMovieDetail(data)
                 }
             })
         }
 
         EspressoIdlingResource.increment()
-        viewModel.getMovies().observe(viewLifecycleOwner, { movieItem ->
-            if (!movieItem.isNullOrEmpty()) {
-                if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
-                    //Memberitahukan bahwa tugas sudah selesai dijalankan
-                    EspressoIdlingResource.decrement()
-                }
+        lifecycleScope.launch {
+            viewModel.getMovies().collectLatest { movieItem ->
+                if (!movieItem.isNullOrEmpty()) {
+                    if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
+                        //Memberitahukan bahwa tugas sudah selesai dijalankan
+                        EspressoIdlingResource.decrement()
+                    }
 
-                lifecycleScope.launch {
-                    viewAdapter.setMovies(movieItem)
-                }
+                    lifecycleScope.launch {
+                        viewAdapter.setMovies(movieItem)
+                    }
 
-                Handler(Looper.getMainLooper()).postDelayed({
-                    binding.rvAllMovie.visibility = View.VISIBLE
-                    binding.textView.visibility = View.VISIBLE
-                    binding.view2.visibility = View.VISIBLE
-                    binding.movieShimmer.visibility = View.GONE
-                }, 500)
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        binding.rvAllMovie.visibility = View.VISIBLE
+                        binding.textView.visibility = View.VISIBLE
+                        binding.view2.visibility = View.VISIBLE
+                        binding.movieShimmer.visibility = View.GONE
+                    }, 500)
+                }
             }
-        })
+        }
 
         val currentActivity = activity as MainActivity
         val toolbar = binding.homeToolbar.toolbarHome
@@ -78,7 +82,7 @@ class MovieFragment : Fragment() {
         return binding.root
     }
 
-    private fun showMovieDetail(data: DiscoverMovieResultsItem) {
+    private fun showMovieDetail(data: Movie) {
         val toDetailItemActivity =
             MovieFragmentDirections.actionMovieFragmentToItemDetailFragment(data, null)
         view?.findNavController()?.navigate(toDetailItemActivity)

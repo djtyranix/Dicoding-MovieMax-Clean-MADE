@@ -1,10 +1,12 @@
 package com.nixstudio.moviemax.data.sources.local
 
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.DataSource
+import androidx.paging.PagingSource
 import com.nixstudio.moviemax.data.entities.FavoriteEntity
 import com.nixstudio.moviemax.data.sources.local.room.MovieMaxDao
 import com.nixstudio.moviemax.data.utils.MediaType
+import com.nixstudio.moviemax.domain.model.Favorite
+import com.nixstudio.moviemax.utils.DataMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -13,9 +15,9 @@ class LocalDataSource(
     private val movieMaxDao: MovieMaxDao
 ) {
 
-    fun getAllFavorites(): DataSource.Factory<Int, FavoriteEntity> = movieMaxDao.getAll()
+    fun getAllFavorites(): PagingSource<Int, FavoriteEntity> = movieMaxDao.getAll()
 
-    fun getAllFromMediaType(mediaType: MediaType): DataSource.Factory<Int, FavoriteEntity> {
+    fun getAllFromMediaType(mediaType: MediaType): PagingSource<Int, FavoriteEntity> {
         return if (mediaType == MediaType.MOVIE) {
             movieMaxDao.getAllFromMediaType("movie")
         } else {
@@ -23,17 +25,17 @@ class LocalDataSource(
         }
     }
 
-    fun addFavorite(favoriteEntity: FavoriteEntity) {
+    fun addFavorite(favorite: Favorite) {
         try {
-            movieMaxDao.insert(favoriteEntity)
+            movieMaxDao.insert(DataMapper.mapFavoriteToFavoriteEntity(favorite))
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
     }
 
-    fun removeFavorite(favoriteEntity: FavoriteEntity) {
+    fun removeFavorite(favorite: Favorite) {
         try {
-            movieMaxDao.delete(favoriteEntity)
+            movieMaxDao.delete(DataMapper.mapFavoriteToFavoriteEntity(favorite))
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }

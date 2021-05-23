@@ -5,8 +5,6 @@ import com.google.gson.annotations.SerializedName
 import com.nixstudio.moviemax.data.utils.GenresItem
 import com.nixstudio.moviemax.data.utils.credits.Credits
 import com.nixstudio.moviemax.data.utils.reviews.ReviewsResponse
-import com.nixstudio.moviemax.data.utils.tvshows.LastEpisodeToAir
-import com.nixstudio.moviemax.data.utils.tvshows.SeasonsItem
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -42,12 +40,6 @@ data class TvShowsEntity(
     @field:SerializedName("overview")
     val overview: String? = null,
 
-    @field:SerializedName("seasons")
-    val seasons: List<SeasonsItem?>? = null,
-
-    @field:SerializedName("last_episode_to_air")
-    val lastEpisodeToAir: LastEpisodeToAir? = null,
-
     @field:SerializedName("poster_path")
     val posterPath: String? = null,
 
@@ -57,12 +49,6 @@ data class TvShowsEntity(
     @field:SerializedName("name")
     val name: String? = null,
 
-    @field:SerializedName("episode_run_time")
-    val episodeRunTime: List<Int?>? = null,
-
     @field:SerializedName("last_air_date")
     val lastAirDate: String? = null,
-
-    @field:SerializedName("status")
-    val status: String? = null
 ) : Parcelable

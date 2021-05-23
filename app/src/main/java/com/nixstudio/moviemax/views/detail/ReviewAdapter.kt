@@ -8,14 +8,14 @@ import com.bumptech.glide.request.RequestOptions
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerDrawable
 import com.nixstudio.moviemax.R
-import com.nixstudio.moviemax.data.utils.reviews.ReviewsItem
 import com.nixstudio.moviemax.databinding.ItemListReviewBinding
+import com.nixstudio.moviemax.domain.model.Review
 
 class ReviewAdapter : RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {
 
-    private val listReview = ArrayList<ReviewsItem>()
+    private val listReview = ArrayList<Review>()
 
-    fun setReviews(reviews: List<ReviewsItem>?) {
+    fun setReviews(reviews: List<Review>?) {
         if (reviews == null) return
 
         listReview.clear()
@@ -25,21 +25,21 @@ class ReviewAdapter : RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {
 
     inner class ReviewViewHolder(private val binding: ItemListReviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(review: ReviewsItem) {
-            binding.tvAuthor.text = review.author
+        fun bind(review: Review) {
+            binding.tvAuthor.text = review.name
 
-            if (review.authorDetails?.rating != null) {
-                if (review.authorDetails.rating < 10 && review.authorDetails.rating >= 0) {
+            if (review.rating != null) {
+                if (review.rating < 10 && review.rating >= 0) {
                     binding.tvRatingReview.text =
                         binding.tvRatingReview.context.resources.getString(
                             R.string.rating_value,
-                            review.authorDetails.rating.toString()
+                            review.rating.toString()
                         )
-                } else if (review.authorDetails.rating == 10.0) {
+                } else if (review.rating == 10.0) {
                     binding.tvRatingReview.text =
                         binding.tvRatingReview.context.resources.getString(
                             R.string.rating_value,
-                            review.authorDetails.rating.toInt().toString()
+                            review.rating.toInt().toString()
                         )
                 }
 
@@ -63,8 +63,8 @@ class ReviewAdapter : RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {
             }
 
             var url: String? = null
-            if (review.authorDetails?.avatarPath != null) {
-                val currentUrl = review.authorDetails.avatarPath
+            if (review.avatarPath != null) {
+                val currentUrl = review.avatarPath
                 url = if (currentUrl.contains("https")) {
                     currentUrl.removeRange(0, 1)
                 } else {

@@ -12,14 +12,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nixstudio.moviemax.R
-import com.nixstudio.moviemax.data.entities.FavoriteEntity
-import com.nixstudio.moviemax.data.sources.remote.DiscoverMovieResultsItem
-import com.nixstudio.moviemax.data.sources.remote.DiscoverTvResultsItem
 import com.nixstudio.moviemax.data.utils.MediaType
 import com.nixstudio.moviemax.databinding.FavoriteFragmentBinding
+import com.nixstudio.moviemax.domain.model.Favorite
+import com.nixstudio.moviemax.domain.model.Movie
+import com.nixstudio.moviemax.domain.model.TvShow
 import com.nixstudio.moviemax.utils.EspressoIdlingResource
 import com.nixstudio.moviemax.viewmodels.FavoriteViewModel
 import com.nixstudio.moviemax.views.MainActivity
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoriteFragment : Fragment() {
@@ -47,9 +49,9 @@ class FavoriteFragment : Fragment() {
             }
 
             viewAdapter.setOnItemClickCallback(object : FavoriteAdapter.OnItemClickCallback {
-                override fun onItemClicked(data: FavoriteEntity) {
+                override fun onItemClicked(data: Favorite) {
                     if (data.mediaType == "movie") {
-                        val movie = DiscoverMovieResultsItem(
+                        val movie = Movie(
                             title = data.title,
                             posterPath = data.posterPath,
                             id = data.itemId,
@@ -57,7 +59,7 @@ class FavoriteFragment : Fragment() {
 
                         showMovieDetail(movie)
                     } else {
-                        val tvShow = DiscoverTvResultsItem(
+                        val tvShow = TvShow(
                             posterPath = data.posterPath,
                             id = data.itemId,
                             name = data.title
@@ -79,49 +81,57 @@ class FavoriteFragment : Fragment() {
             ) {
                 if (!isSpinnerInitialized) {
                     isSpinnerInitialized = true
-                    viewModel.getFavorites().observe(viewLifecycleOwner, {
-                        if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
-                            EspressoIdlingResource.decrement()
-                        }
+                    lifecycleScope.launch {
+                        viewModel.getFavorites().collectLatest {
+                            if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
+                                EspressoIdlingResource.decrement()
+                            }
 
-                        viewAdapter.submitList(it)
-                        checkIsListEmpty(it.size)
-                    })
+                            viewAdapter.submitData(it)
+                            checkIsListEmpty(viewAdapter.itemCount)
+                        }
+                    }
                     return
                 }
 
                 when (id) {
                     0L -> {
-                        viewModel.getFavorites().observe(viewLifecycleOwner, {
-                            if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
-                                EspressoIdlingResource.decrement()
-                            }
+                        lifecycleScope.launch {
+                            viewModel.getFavorites().collectLatest {
+                                if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
+                                    EspressoIdlingResource.decrement()
+                                }
 
-                            viewAdapter.submitList(it)
-                            checkIsListEmpty(it.size)
-                        })
+                                viewAdapter.submitData(it)
+                                checkIsListEmpty(viewAdapter.itemCount)
+                            }
+                        }
                     }
                     1L -> {
-                        viewModel.getFavoritesByMediaType(MediaType.MOVIE)
-                            .observe(viewLifecycleOwner, {
-                                if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
-                                    EspressoIdlingResource.decrement()
-                                }
+                        lifecycleScope.launch {
+                            viewModel.getFavoritesByMediaType(MediaType.MOVIE)
+                                .collectLatest {
+                                    if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
+                                        EspressoIdlingResource.decrement()
+                                    }
 
-                                viewAdapter.submitList(it)
-                                checkIsListEmpty(it.size)
-                            })
+                                    viewAdapter.submitData(it)
+                                    checkIsListEmpty(viewAdapter.itemCount)
+                                }
+                        }
                     }
                     else -> {
-                        viewModel.getFavoritesByMediaType(MediaType.TVSHOW)
-                            .observe(viewLifecycleOwner, {
-                                if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
-                                    EspressoIdlingResource.decrement()
-                                }
+                        lifecycleScope.launch {
+                            viewModel.getFavoritesByMediaType(MediaType.TVSHOW)
+                                .collectLatest {
+                                    if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
+                                        EspressoIdlingResource.decrement()
+                                    }
 
-                                viewAdapter.submitList(it)
-                                checkIsListEmpty(it.size)
-                            })
+                                    viewAdapter.submitData(it)
+                                    checkIsListEmpty(viewAdapter.itemCount)
+                                }
+                        }
                     }
                 }
             }
@@ -132,12 +142,14 @@ class FavoriteFragment : Fragment() {
         }
 
         EspressoIdlingResource.increment()
-        viewModel.getItemCount().observe(viewLifecycleOwner, { count ->
-            if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
-                EspressoIdlingResource.decrement()
+        lifecycleScope.launch {
+            viewModel.getItemCount().collectLatest { count ->
+                if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
+                    EspressoIdlingResource.decrement()
+                }
+                checkIsListEmpty(count)
             }
-            checkIsListEmpty(count)
-        })
+        }
 
         val currentActivity = activity as MainActivity
         val toolbar = binding.homeToolbar.toolbarHome
@@ -172,13 +184,13 @@ class FavoriteFragment : Fragment() {
         }
     }
 
-    private fun showMovieDetail(data: DiscoverMovieResultsItem) {
+    private fun showMovieDetail(data: Movie) {
         val toDetailItemActivity =
             FavoriteFragmentDirections.actionFavoriteFragmentToItemDetailFragment(data, null)
         view?.findNavController()?.navigate(toDetailItemActivity)
     }
 
-    private fun showTvDetail(data: DiscoverTvResultsItem) {
+    private fun showTvDetail(data: TvShow) {
         val toDetailItemActivity =
             FavoriteFragmentDirections.actionFavoriteFragmentToItemDetailFragment(null, data)
         view?.findNavController()?.navigate(toDetailItemActivity)

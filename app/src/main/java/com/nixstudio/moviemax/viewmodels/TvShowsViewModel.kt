@@ -1,10 +1,10 @@
 package com.nixstudio.moviemax.viewmodels
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.nixstudio.moviemax.data.sources.MovieMaxRepository
-import com.nixstudio.moviemax.data.sources.remote.DiscoverTvResultsItem
+import com.nixstudio.moviemax.domain.model.TvShow
+import com.nixstudio.moviemax.domain.usecase.MovieMaxUseCase
+import kotlinx.coroutines.flow.Flow
 
-class TvShowsViewModel(private val repo: MovieMaxRepository) : ViewModel() {
-    fun getTvShows(): LiveData<List<DiscoverTvResultsItem>> = repo.getDiscoveryTvShows()
+class TvShowsViewModel(private val useCase: MovieMaxUseCase) : ViewModel() {
+    fun getTvShows(): Flow<List<TvShow>> = useCase.getDiscoveryTvShows()
 }

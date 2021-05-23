@@ -1,11 +1,11 @@
 package com.nixstudio.moviemax.viewmodels
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.nixstudio.moviemax.data.entities.CombinedResultEntity
-import com.nixstudio.moviemax.data.sources.MovieMaxRepository
+import com.nixstudio.moviemax.domain.model.Combined
+import com.nixstudio.moviemax.domain.usecase.MovieMaxUseCase
+import kotlinx.coroutines.flow.Flow
 
-class SearchViewModel(private val repo: MovieMaxRepository) : ViewModel() {
-    fun getSearchResults(string: String): LiveData<List<CombinedResultEntity>> =
-        repo.searchByString(string)
+class SearchViewModel(private val useCase: MovieMaxUseCase) : ViewModel() {
+    fun getSearchResults(string: String): Flow<List<Combined>> =
+        useCase.searchByString(string)
 }

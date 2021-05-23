@@ -14,14 +14,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nixstudio.moviemax.R
-import com.nixstudio.moviemax.data.entities.CombinedResultEntity
-import com.nixstudio.moviemax.data.sources.remote.DiscoverMovieResultsItem
-import com.nixstudio.moviemax.data.sources.remote.DiscoverTvResultsItem
 import com.nixstudio.moviemax.databinding.FragmentHomeBinding
+import com.nixstudio.moviemax.domain.model.Combined
+import com.nixstudio.moviemax.domain.model.Movie
+import com.nixstudio.moviemax.domain.model.TvShow
 import com.nixstudio.moviemax.utils.EspressoIdlingResource
 import com.nixstudio.moviemax.utils.hideKeyboard
 import com.nixstudio.moviemax.viewmodels.HomeViewModel
 import com.nixstudio.moviemax.views.MainActivity
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment(), View.OnClickListener {
@@ -112,30 +114,23 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
             trendingViewAdapter.setOnItemClickCallback(object :
                 HomeTrendingAdapter.OnItemClickCallback {
-                override fun onItemClicked(data: CombinedResultEntity) {
+                override fun onItemClicked(data: Combined) {
                     if (data.mediaType == "movie") {
-                        val movie = DiscoverMovieResultsItem(
+                        val movie = Movie(
                             overview = data.overview,
                             title = data.title,
                             posterPath = data.posterPath,
-                            backdropPath = data.backdropPath,
-                            releaseDate = data.releaseDate,
-                            popularity = data.popularity,
                             voteAverage = data.voteAverage,
                             id = data.id,
-                            adult = data.adult,
                         )
 
                         showMovieDetail(movie)
                     } else {
-                        val tvShow = DiscoverTvResultsItem(
+                        val tvShow = TvShow(
                             overview = data.overview,
                             posterPath = data.posterPath,
-                            backdropPath = data.backdropPath,
-                            popularity = data.popularity,
                             voteAverage = data.voteAverage,
                             id = data.id,
-                            firstAirDate = data.firstAirDate,
                             name = data.name
                         )
 
@@ -145,13 +140,13 @@ class HomeFragment : Fragment(), View.OnClickListener {
             })
 
             movieViewAdapter.setOnItemClickCallback(object : HomeMovieAdapter.OnItemClickCallback {
-                override fun onItemClicked(data: DiscoverMovieResultsItem) {
+                override fun onItemClicked(data: Movie) {
                     showMovieDetail(data)
                 }
             })
 
             tvViewAdapter.setOnItemClickCallback(object : HomeTvAdapter.OnItemClickCallback {
-                override fun onItemClicked(data: DiscoverTvResultsItem) {
+                override fun onItemClicked(data: TvShow) {
                     showTvDetail(data)
                 }
             })
@@ -161,50 +156,52 @@ class HomeFragment : Fragment(), View.OnClickListener {
         EspressoIdlingResource.increment()
         EspressoIdlingResource.increment()
 
-        viewModel.getTrending().observe(viewLifecycleOwner, { item ->
-            if (!item.isNullOrEmpty()) {
-                if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
-                    //Memberitahukan bahwa tugas sudah selesai dijalankan
-                    EspressoIdlingResource.decrement()
+        lifecycleScope.launch {
+            viewModel.getTrending().collectLatest { item ->
+                if (!item.isNullOrEmpty()) {
+                    if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
+                        //Memberitahukan bahwa tugas sudah selesai dijalankan
+                        EspressoIdlingResource.decrement()
+                    }
+                    trendingViewAdapter.setTrendingData(item.take(7))
+
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        binding.rvTrending.visibility = View.VISIBLE
+                        binding.rvTrendingShimmer.visibility = View.GONE
+                    }, 500)
                 }
-                trendingViewAdapter.setTrendingData(item.take(7))
-
-                Handler(Looper.getMainLooper()).postDelayed({
-                    binding.rvTrending.visibility = View.VISIBLE
-                    binding.rvTrendingShimmer.visibility = View.GONE
-                }, 500)
             }
-        })
 
-        viewModel.getMovies().observe(viewLifecycleOwner, { movieItem ->
-            if (!movieItem.isNullOrEmpty()) {
-                if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
-                    //Memberitahukan bahwa tugas sudah selesai dijalankan
-                    EspressoIdlingResource.decrement()
+            viewModel.getMovies().collectLatest { movieItem ->
+                if (!movieItem.isNullOrEmpty()) {
+                    if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
+                        //Memberitahukan bahwa tugas sudah selesai dijalankan
+                        EspressoIdlingResource.decrement()
+                    }
+                    movieViewAdapter.setMovies(movieItem.take(7))
+
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        binding.rvMovie.visibility = View.VISIBLE
+                        binding.rvMovieShimmer.visibility = View.GONE
+                    }, 500)
                 }
-                movieViewAdapter.setMovies(movieItem.take(7))
-
-                Handler(Looper.getMainLooper()).postDelayed({
-                    binding.rvMovie.visibility = View.VISIBLE
-                    binding.rvMovieShimmer.visibility = View.GONE
-                }, 500)
             }
-        })
 
-        viewModel.getTvShows().observe(viewLifecycleOwner, { tvItem ->
-            if (!tvItem.isNullOrEmpty()) {
-                if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
-                    //Memberitahukan bahwa tugas sudah selesai dijalankan
-                    EspressoIdlingResource.decrement()
+            viewModel.getTvShows().collectLatest { tvItem ->
+                if (!tvItem.isNullOrEmpty()) {
+                    if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
+                        //Memberitahukan bahwa tugas sudah selesai dijalankan
+                        EspressoIdlingResource.decrement()
+                    }
+                    tvViewAdapter.setTv(tvItem.take(7))
+
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        binding.rvTvshows.visibility = View.VISIBLE
+                        binding.rvTvShimmer.visibility = View.GONE
+                    }, 500)
                 }
-                tvViewAdapter.setTv(tvItem.take(7))
-
-                Handler(Looper.getMainLooper()).postDelayed({
-                    binding.rvTvshows.visibility = View.VISIBLE
-                    binding.rvTvShimmer.visibility = View.GONE
-                }, 500)
             }
-        })
+        }
 
         hideKeyboard()
 
@@ -233,13 +230,13 @@ class HomeFragment : Fragment(), View.OnClickListener {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun showMovieDetail(data: DiscoverMovieResultsItem) {
+    private fun showMovieDetail(data: Movie) {
         val toDetailItemActivity =
             HomeFragmentDirections.actionHomeFragmentToItemDetailFragment(data, null)
         view?.findNavController()?.navigate(toDetailItemActivity)
     }
 
-    private fun showTvDetail(data: DiscoverTvResultsItem) {
+    private fun showTvDetail(data: TvShow) {
         val toDetailItemActivity =
             HomeFragmentDirections.actionHomeFragmentToItemDetailFragment(null, data)
         view?.findNavController()?.navigate(toDetailItemActivity)

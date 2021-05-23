@@ -13,44 +13,44 @@ import retrofit2.http.Query
 
 interface ApiService {
     @GET("discover/movie")
-    fun getMovieDiscovery(
+    suspend fun getMovieDiscovery(
         @Query("api_key") api_key: String,
         @Query("sort_by") sort_by: String,
         @Query("include_adult") include_adult: Boolean,
         @Query("page") page: Int
-    ): Call<DiscoverMovieResponse>
+    ): DiscoverMovieResponse
 
     @GET("discover/tv")
-    fun getTvDiscovery(
+    suspend fun getTvDiscovery(
         @Query("api_key") api_key: String,
         @Query("sort_by") sort_by: String,
         @Query("include_adult") include_adult: Boolean,
         @Query("page") page: Int
-    ): Call<DiscoverTvResponse>
+    ): DiscoverTvResponse
 
     @GET("trending/all/day")
-    fun getTrendingToday(
+    suspend fun getTrendingToday(
         @Query("api_key") api_key: String
-    ): Call<TrendingResponse>
+    ): TrendingResponse
 
     @GET("search/multi")
-    fun searchWithString(
+    suspend fun searchWithString(
         @Query("api_key") api_key: String,
         @Query("query") query: String,
         @Query("page") page: Int
-    ): Call<SearchResponse>
+    ): SearchResponse
 
     @GET("movie/{id}")
-    fun getMovieById(
+    suspend fun getMovieById(
         @Path("id") id: Long,
         @Query("api_key") api_key: String,
         @Query("append_to_response") append_to_response: String
-    ): Call<MovieEntity>
+    ): MovieEntity
 
     @GET("tv/{id}")
-    fun getTvShowsById(
+    suspend fun getTvShowsById(
         @Path("id") id: Long,
         @Query("api_key") api_key: String,
         @Query("append_to_response") append_to_response: String
-    ): Call<TvShowsEntity>
+    ): TvShowsEntity
 }

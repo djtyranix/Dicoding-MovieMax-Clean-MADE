@@ -23,23 +23,11 @@ data class DiscoverTvResponse(
 @Parcelize
 data class DiscoverTvResultsItem(
 
-    @field:SerializedName("first_air_date")
-    val firstAirDate: String? = null,
-
     @field:SerializedName("overview")
     val overview: String? = null,
 
     @field:SerializedName("poster_path")
     val posterPath: String? = null,
-
-    @field:SerializedName("backdrop_path")
-    val backdropPath: String? = null,
-
-    @field:SerializedName("popularity")
-    val popularity: Double? = null,
-
-    @field:SerializedName("vote_average")
-    val voteAverage: Double? = null,
 
     @field:SerializedName("name")
     val name: String? = null,

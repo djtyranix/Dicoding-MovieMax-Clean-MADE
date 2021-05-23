@@ -10,17 +10,18 @@ import com.facebook.shimmer.ShimmerDrawable
 import com.nixstudio.moviemax.R
 import com.nixstudio.moviemax.data.entities.CombinedResultEntity
 import com.nixstudio.moviemax.databinding.ItemListSearchBinding
+import com.nixstudio.moviemax.domain.model.Combined
 import java.util.*
 import kotlin.collections.ArrayList
 
 class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.SearchViewHolder>() {
 
     private lateinit var onItemClickCallback: OnItemClickCallback
-    private val listSearch = ArrayList<CombinedResultEntity>()
+    private val listSearch = ArrayList<Combined>()
 
     inner class SearchViewHolder(private val binding: ItemListSearchBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: CombinedResultEntity) {
+        fun bind(data: Combined) {
             if (data.mediaType == "movie") {
                 binding.contentTitle.text = data.title
             } else {
@@ -56,14 +57,14 @@ class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.SearchViewH
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: CombinedResultEntity)
+        fun onItemClicked(data: Combined)
     }
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
 
-    fun setSearchResult(data: List<CombinedResultEntity>?) {
+    fun setSearchResult(data: List<Combined>?) {
         if (data == null) return
 
         this.listSearch.clear()

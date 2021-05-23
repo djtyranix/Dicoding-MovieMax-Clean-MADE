@@ -118,12 +118,12 @@
         android:label="item_detail_fragment"
         tools:layout="@layout/item_detail_fragment" >
         <argument
-            android:name="movie_entity"
-            app:argType="com.nixstudio.moviemax.data.sources.remote.DiscoverMovieResultsItem"
+            android:name="movie"
+            app:argType="com.nixstudio.moviemax.domain.model.Movie"
             app:nullable="true" />
         <argument
-            android:name="tv_shows_entity"
-            app:argType="com.nixstudio.moviemax.data.sources.remote.DiscoverTvResultsItem"
+            android:name="tv_show"
+            app:argType="com.nixstudio.moviemax.domain.model.TvShow"
             app:nullable="true" />
     </fragment>
 </navigation>

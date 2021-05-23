@@ -8,23 +8,23 @@ import com.bumptech.glide.request.RequestOptions
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerDrawable
 import com.nixstudio.moviemax.R
-import com.nixstudio.moviemax.data.sources.remote.DiscoverTvResultsItem
 import com.nixstudio.moviemax.databinding.ItemListMainBinding
+import com.nixstudio.moviemax.domain.model.TvShow
 
 class HomeTvAdapter : RecyclerView.Adapter<HomeTvAdapter.TvShowsViewHolder>() {
 
     private lateinit var onItemClickCallback: OnItemClickCallback
-    private val listTv = ArrayList<DiscoverTvResultsItem>()
+    private val listTv = ArrayList<TvShow>()
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: DiscoverTvResultsItem)
+        fun onItemClicked(data: TvShow)
     }
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
 
-    fun setTv(tvShows: List<DiscoverTvResultsItem>?) {
+    fun setTv(tvShows: List<TvShow>?) {
         if (tvShows == null) return
 
         this.listTv.clear()
@@ -34,7 +34,7 @@ class HomeTvAdapter : RecyclerView.Adapter<HomeTvAdapter.TvShowsViewHolder>() {
 
     inner class TvShowsViewHolder(private val binding: ItemListMainBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(tv: DiscoverTvResultsItem) {
+        fun bind(tv: TvShow) {
             binding.tvTitle.text = tv.name
 
             val url = "https://image.tmdb.org/t/p/original${tv.posterPath}"

@@ -8,23 +8,23 @@ import com.bumptech.glide.request.RequestOptions
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerDrawable
 import com.nixstudio.moviemax.R
-import com.nixstudio.moviemax.data.entities.CombinedResultEntity
 import com.nixstudio.moviemax.databinding.ItemListMainBinding
+import com.nixstudio.moviemax.domain.model.Combined
 
 class HomeTrendingAdapter : RecyclerView.Adapter<HomeTrendingAdapter.TrendingViewHolder>() {
 
     private lateinit var onItemClickCallback: OnItemClickCallback
-    private val listTrending = ArrayList<CombinedResultEntity>()
+    private val listTrending = ArrayList<Combined>()
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: CombinedResultEntity)
+        fun onItemClicked(data: Combined)
     }
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
 
-    fun setTrendingData(list: List<CombinedResultEntity>?) {
+    fun setTrendingData(list: List<Combined>?) {
         if (list == null) return
 
         this.listTrending.clear()
@@ -34,7 +34,7 @@ class HomeTrendingAdapter : RecyclerView.Adapter<HomeTrendingAdapter.TrendingVie
 
     inner class TrendingViewHolder(private val binding: ItemListMainBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: CombinedResultEntity) {
+        fun bind(item: Combined) {
             if (item.mediaType == "movie") {
                 binding.tvTitle.text = item.title
             } else {

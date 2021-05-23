@@ -8,14 +8,14 @@ import com.bumptech.glide.request.RequestOptions
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerDrawable
 import com.nixstudio.moviemax.R
-import com.nixstudio.moviemax.data.utils.credits.CastItem
 import com.nixstudio.moviemax.databinding.ItemListCastBinding
+import com.nixstudio.moviemax.domain.model.Cast
 
 class CastAdapter : RecyclerView.Adapter<CastAdapter.CastViewHolder>() {
 
-    private val listCast = ArrayList<CastItem>()
+    private val listCast = ArrayList<Cast>()
 
-    fun setCasts(casts: List<CastItem>?) {
+    fun setCasts(casts: List<Cast>?) {
         if (casts == null) return
 
         listCast.clear()
@@ -25,7 +25,7 @@ class CastAdapter : RecyclerView.Adapter<CastAdapter.CastViewHolder>() {
 
     inner class CastViewHolder(private val binding: ItemListCastBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(cast: CastItem) {
+        fun bind(cast: Cast) {
             binding.tvTitle.text = cast.name
 
             val shimmer =

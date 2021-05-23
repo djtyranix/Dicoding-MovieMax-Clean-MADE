@@ -25,16 +25,16 @@ import com.facebook.shimmer.ShimmerDrawable
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.nixstudio.moviemax.R
-import com.nixstudio.moviemax.data.entities.MovieEntity
-import com.nixstudio.moviemax.data.entities.TvShowsEntity
-import com.nixstudio.moviemax.data.sources.remote.DiscoverMovieResultsItem
-import com.nixstudio.moviemax.data.sources.remote.DiscoverTvResultsItem
-import com.nixstudio.moviemax.data.utils.credits.CastItem
-import com.nixstudio.moviemax.data.utils.reviews.ReviewsItem
 import com.nixstudio.moviemax.databinding.ItemDetailFragmentBinding
+import com.nixstudio.moviemax.domain.model.Cast
+import com.nixstudio.moviemax.domain.model.Movie
+import com.nixstudio.moviemax.domain.model.Review
+import com.nixstudio.moviemax.domain.model.TvShow
 import com.nixstudio.moviemax.utils.EspressoIdlingResource
 import com.nixstudio.moviemax.viewmodels.ItemDetailViewModel
 import com.nixstudio.moviemax.views.MainActivity
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ItemDetailFragment : Fragment() {
@@ -60,8 +60,8 @@ class ItemDetailFragment : Fragment() {
     private lateinit var tvRating: TextView
     private lateinit var castAdapter: CastAdapter
     private lateinit var reviewAdapter: ReviewAdapter
-    private var currentTvShows: DiscoverTvResultsItem? = null
-    private var currentMovie: DiscoverMovieResultsItem? = null
+    private var currentTvShows: TvShow? = null
+    private var currentMovie: Movie? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -104,8 +104,8 @@ class ItemDetailFragment : Fragment() {
             }
 
             val args: ItemDetailFragmentArgs by navArgs()
-            currentMovie = args.movieEntity
-            currentTvShows = args.tvShowsEntity
+            currentMovie = args.movie
+            currentTvShows = args.tvShow
 
             shimmer =
                 Shimmer.AlphaHighlightBuilder()// The attributes for a ShimmerDrawable is set by this builder
@@ -124,16 +124,20 @@ class ItemDetailFragment : Fragment() {
             if (currentMovie != null) {
                 val id = currentMovie?.id
                 if (id != null) {
-                    viewModel.getCurrentMovie(id).observe(viewLifecycleOwner, { movie ->
-                        setMovieData(movie)
-                    })
+                    lifecycleScope.launch {
+                        viewModel.getCurrentMovie(id).collectLatest { movie ->
+                            setMovieData(movie)
+                        }
+                    }
                 }
             } else if (currentTvShows != null) {
                 val id = currentTvShows?.id
                 if (id != null) {
-                    viewModel.getCurrentTvShows(id).observe(viewLifecycleOwner, { tvShows ->
-                        setTvShows(tvShows)
-                    })
+                    lifecycleScope.launch {
+                        viewModel.getCurrentTvShows(id).collectLatest { tvShows ->
+                            setTvShows(tvShows)
+                        }
+                    }
                 }
             }
         }
@@ -207,7 +211,7 @@ class ItemDetailFragment : Fragment() {
             .into(this)
     }
 
-    private fun setMovieData(movie: MovieEntity) {
+    private fun setMovieData(movie: Movie) {
         var posterUrl: String? = null
         var backdropUrl: String? = null
 
@@ -229,18 +233,18 @@ class ItemDetailFragment : Fragment() {
             tvGenre.text = resources.getString(R.string.not_set)
         }
 
-        if (movie.credits?.cast.isNullOrEmpty()) {
+        if (movie.credits.isNullOrEmpty()) {
             binding.rvCast.visibility = View.GONE
             binding.tvNoCastInfo.visibility = View.VISIBLE
         } else {
-            castAdapter.setCasts(movie.credits?.cast as List<CastItem>?)
+            castAdapter.setCasts(movie.credits as List<Cast>?)
         }
 
-        if (movie.reviews?.results.isNullOrEmpty()) {
+        if (movie.reviews.isNullOrEmpty()) {
             binding.rvReview.visibility = View.GONE
             binding.tvNoReviews.visibility = View.VISIBLE
         } else {
-            reviewAdapter.setReviews(movie.reviews?.results as List<ReviewsItem>?)
+            reviewAdapter.setReviews(movie.reviews as List<Review>?)
         }
 
         collapsingToolbarLayout.title = movie.title
@@ -251,7 +255,7 @@ class ItemDetailFragment : Fragment() {
         tvRating.text = resources.getString(R.string.rating_value, movie.voteAverage.toString())
     }
 
-    private fun setTvShows(tvShows: TvShowsEntity) {
+    private fun setTvShows(tvShows: TvShow) {
         var posterUrl: String? = null
         var backdropUrl: String? = null
 
@@ -266,18 +270,18 @@ class ItemDetailFragment : Fragment() {
         imgBackdrop.loadImage(backdropUrl, "backdrop")
         imgPoster.loadImage(posterUrl, "poster")
 
-        if (tvShows.credits?.cast.isNullOrEmpty()) {
+        if (tvShows.credits.isNullOrEmpty()) {
             binding.rvCast.visibility = View.GONE
             binding.tvNoCastInfo.visibility = View.VISIBLE
         } else {
-            castAdapter.setCasts(tvShows.credits?.cast as List<CastItem>?)
+            castAdapter.setCasts(tvShows.credits as List<Cast>?)
         }
 
-        if (tvShows.reviews?.results.isNullOrEmpty()) {
+        if (tvShows.reviews.isNullOrEmpty()) {
             binding.rvReview.visibility = View.GONE
             binding.tvNoReviews.visibility = View.VISIBLE
         } else {
-            reviewAdapter.setReviews(tvShows.reviews?.results as List<ReviewsItem>?)
+            reviewAdapter.setReviews(tvShows.reviews as List<Review>?)
         }
 
         collapsingToolbarLayout.title = tvShows.name

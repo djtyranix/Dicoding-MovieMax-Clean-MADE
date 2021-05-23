@@ -8,22 +8,22 @@ import com.bumptech.glide.request.RequestOptions
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerDrawable
 import com.nixstudio.moviemax.R
-import com.nixstudio.moviemax.data.sources.remote.DiscoverTvResultsItem
 import com.nixstudio.moviemax.databinding.ItemListFullBinding
+import com.nixstudio.moviemax.domain.model.TvShow
 
 class TvShowsAdapter : RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>() {
     private lateinit var onItemClickCallback: OnItemClickCallback
-    private val listTv = ArrayList<DiscoverTvResultsItem>()
+    private val listTv = ArrayList<TvShow>()
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: DiscoverTvResultsItem)
+        fun onItemClicked(data: TvShow)
     }
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
 
-    fun setTv(tvShows: List<DiscoverTvResultsItem>?) {
+    fun setTv(tvShows: List<TvShow>?) {
         if (tvShows == null) return
 
         this.listTv.clear()
@@ -33,7 +33,7 @@ class TvShowsAdapter : RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>() 
 
     inner class TvShowsViewHolder(private val binding: ItemListFullBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(tv: DiscoverTvResultsItem) {
+        fun bind(tv: TvShow) {
             binding.tvTitle.text = tv.name
 
             val shimmer =

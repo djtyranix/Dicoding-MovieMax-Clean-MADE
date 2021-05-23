@@ -3,16 +3,15 @@ package com.nixstudio.moviemax.viewmodels
 import android.util.Log
 import androidx.lifecycle.*
 import com.hadilq.liveevent.LiveEvent
-import com.nixstudio.moviemax.data.entities.MovieEntity
-import com.nixstudio.moviemax.data.entities.TvShowsEntity
-import com.nixstudio.moviemax.data.sources.MovieMaxRepository
-import com.nixstudio.moviemax.data.sources.remote.DiscoverMovieResultsItem
-import com.nixstudio.moviemax.data.sources.remote.DiscoverTvResultsItem
+import com.nixstudio.moviemax.domain.model.Movie
+import com.nixstudio.moviemax.domain.model.TvShow
+import com.nixstudio.moviemax.domain.usecase.MovieMaxUseCase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ItemDetailViewModel(private val repo: MovieMaxRepository) : ViewModel() {
+class ItemDetailViewModel(private val useCase: MovieMaxUseCase) : ViewModel() {
 
     private var _isBackdropLoading = MutableLiveData<Boolean>()
     private var _isPosterLoading = MutableLiveData<Boolean>()
@@ -31,9 +30,9 @@ class ItemDetailViewModel(private val repo: MovieMaxRepository) : ViewModel() {
         _isPosterLoading.postValue(false)
     }
 
-    fun getCurrentMovie(id: Long): LiveData<MovieEntity> = repo.getMovieById(id)
+    fun getCurrentMovie(id: Long): Flow<Movie> = useCase.getMovieById(id)
 
-    fun getCurrentTvShows(id: Long): LiveData<TvShowsEntity> = repo.getTvShowsById(id)
+    fun getCurrentTvShows(id: Long): Flow<TvShow> = useCase.getTvShowsById(id)
 
     fun getLoadingState(): LiveData<Boolean> {
         return MediatorLiveData<Boolean>().apply {
@@ -61,54 +60,20 @@ class ItemDetailViewModel(private val repo: MovieMaxRepository) : ViewModel() {
     }
 
     fun addFavorite(
-        movie: DiscoverMovieResultsItem? = null,
-        tvShows: DiscoverTvResultsItem? = null
+        movie: Movie? = null,
+        tvShow: TvShow? = null
     ) {
-        var movieEntity: MovieEntity? = null
-        var tvShowsEntity: TvShowsEntity? = null
-
-        if (movie != null) {
-            movieEntity = MovieEntity(
-                id = movie.id,
-                title = movie.title,
-                posterPath = movie.posterPath
-            )
-        } else if (tvShows != null) {
-            tvShowsEntity = TvShowsEntity(
-                id = tvShows.id,
-                name = tvShows.name,
-                posterPath = tvShows.posterPath
-            )
-        }
-
         viewModelScope.launch(Dispatchers.Default) {
-            repo.addFavorite(movieEntity, tvShowsEntity)
+            useCase.addFavorite(movie, tvShow)
         }
     }
 
     fun removeFavorite(
-        movie: DiscoverMovieResultsItem? = null,
-        tvShows: DiscoverTvResultsItem? = null
+        movie: Movie? = null,
+        tvShow: TvShow? = null
     ) {
-        var movieEntity: MovieEntity? = null
-        var tvShowsEntity: TvShowsEntity? = null
-
-        if (movie != null) {
-            movieEntity = MovieEntity(
-                id = movie.id,
-                title = movie.title,
-                posterPath = movie.posterPath
-            )
-        } else if (tvShows != null) {
-            tvShowsEntity = TvShowsEntity(
-                id = tvShows.id,
-                name = tvShows.name,
-                posterPath = tvShows.posterPath
-            )
-        }
-
         viewModelScope.launch(Dispatchers.Default) {
-            repo.removeFavorite(movieEntity, tvShowsEntity)
+            useCase.removeFavorite(movie, tvShow)
         }
     }
 
@@ -116,7 +81,7 @@ class ItemDetailViewModel(private val repo: MovieMaxRepository) : ViewModel() {
         viewModelScope.launch(Dispatchers.Main) {
             val isExist = withContext(Dispatchers.Default) {
                 try {
-                    val count = repo.checkIfFavoriteExist(id)
+                    val count = useCase.checkIfFavoriteExist(id)
 
                     Log.d("count", count.toString())
 

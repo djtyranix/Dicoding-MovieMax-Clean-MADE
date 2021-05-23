@@ -12,14 +12,16 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nixstudio.moviemax.R
-import com.nixstudio.moviemax.data.entities.CombinedResultEntity
-import com.nixstudio.moviemax.data.sources.remote.DiscoverMovieResultsItem
-import com.nixstudio.moviemax.data.sources.remote.DiscoverTvResultsItem
 import com.nixstudio.moviemax.databinding.SearchFragmentBinding
+import com.nixstudio.moviemax.domain.model.Combined
+import com.nixstudio.moviemax.domain.model.Movie
+import com.nixstudio.moviemax.domain.model.TvShow
 import com.nixstudio.moviemax.utils.EspressoIdlingResource
 import com.nixstudio.moviemax.utils.hideKeyboard
 import com.nixstudio.moviemax.viewmodels.SearchViewModel
 import com.nixstudio.moviemax.views.MainActivity
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
@@ -47,30 +49,23 @@ class SearchFragment : Fragment() {
             }
 
             viewAdapter.setOnItemClickCallback(object : SearchResultAdapter.OnItemClickCallback {
-                override fun onItemClicked(data: CombinedResultEntity) {
+                override fun onItemClicked(data: Combined) {
                     if (data.mediaType == "movie") {
-                        val movie = DiscoverMovieResultsItem(
+                        val movie = Movie(
                             overview = data.overview,
                             title = data.title,
                             posterPath = data.posterPath,
-                            backdropPath = data.backdropPath,
-                            releaseDate = data.releaseDate,
-                            popularity = data.popularity,
                             voteAverage = data.voteAverage,
                             id = data.id,
-                            adult = data.adult,
                         )
 
                         showMovieDetail(movie)
                     } else {
-                        val tvShow = DiscoverTvResultsItem(
+                        val tvShow = TvShow(
                             overview = data.overview,
                             posterPath = data.posterPath,
-                            backdropPath = data.backdropPath,
-                            popularity = data.popularity,
                             voteAverage = data.voteAverage,
                             id = data.id,
-                            firstAirDate = data.firstAirDate,
                             name = data.name
                         )
 
@@ -83,32 +78,34 @@ class SearchFragment : Fragment() {
         }
 
         EspressoIdlingResource.increment()
-        viewModel.getSearchResults(args.query).observe(viewLifecycleOwner, { item ->
-            if (!item.isNullOrEmpty()) {
-                if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
-                    //Memberitahukan bahwa tugas sudah selesai dijalankan
-                    EspressoIdlingResource.decrement()
-                }
-                viewAdapter.setSearchResult(item)
+        lifecycleScope.launch {
+            viewModel.getSearchResults(args.query).collectLatest { item ->
+                if (!item.isNullOrEmpty()) {
+                    if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
+                        //Memberitahukan bahwa tugas sudah selesai dijalankan
+                        EspressoIdlingResource.decrement()
+                    }
+                    viewAdapter.setSearchResult(item)
 
-                Handler(Looper.getMainLooper()).postDelayed({
-                    binding.rvSearchResult.visibility = View.VISIBLE
-                    binding.rvSearchShimmer.visibility = View.GONE
-                }, 500)
-            } else {
-                if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
-                    //Memberitahukan bahwa tugas sudah selesai dijalankan
-                    EspressoIdlingResource.decrement()
-                }
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        binding.rvSearchResult.visibility = View.VISIBLE
+                        binding.rvSearchShimmer.visibility = View.GONE
+                    }, 500)
+                } else {
+                    if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
+                        //Memberitahukan bahwa tugas sudah selesai dijalankan
+                        EspressoIdlingResource.decrement()
+                    }
 
-                Handler(Looper.getMainLooper()).postDelayed({
-                    binding.rvSearchShimmer.visibility = View.GONE
-                    binding.rvSearchResult.visibility = View.GONE
-                    binding.emptySearchPlaceholder.visibility = View.VISIBLE
-                    binding.emptySearchInfo.visibility = View.VISIBLE
-                }, 500)
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        binding.rvSearchShimmer.visibility = View.GONE
+                        binding.rvSearchResult.visibility = View.GONE
+                        binding.emptySearchPlaceholder.visibility = View.VISIBLE
+                        binding.emptySearchInfo.visibility = View.VISIBLE
+                    }, 500)
+                }
             }
-        })
+        }
 
         val currentActivity = activity as MainActivity
         val toolbar = binding.homeToolbar.toolbarHome
@@ -124,13 +121,13 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
-    private fun showMovieDetail(data: DiscoverMovieResultsItem) {
+    private fun showMovieDetail(data: Movie) {
         val toDetailItemActivity =
             SearchFragmentDirections.actionSearchFragmentToItemDetailFragment(data, null)
         view?.findNavController()?.navigate(toDetailItemActivity)
     }
 
-    private fun showTvDetail(data: DiscoverTvResultsItem) {
+    private fun showTvDetail(data: TvShow) {
         val toDetailItemActivity =
             SearchFragmentDirections.actionSearchFragmentToItemDetailFragment(null, data)
         view?.findNavController()?.navigate(toDetailItemActivity)

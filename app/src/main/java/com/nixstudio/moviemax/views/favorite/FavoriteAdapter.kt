@@ -2,7 +2,7 @@ package com.nixstudio.moviemax.views.favorite
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -10,17 +10,17 @@ import com.bumptech.glide.request.RequestOptions
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerDrawable
 import com.nixstudio.moviemax.R
-import com.nixstudio.moviemax.data.entities.FavoriteEntity
 import com.nixstudio.moviemax.databinding.ItemListFavoriteBinding
+import com.nixstudio.moviemax.domain.model.Favorite
 import java.util.*
 
 class FavoriteAdapter :
-    PagedListAdapter<FavoriteEntity, FavoriteAdapter.FavoriteViewHolder>(DIFF_CALLBACK) {
+    PagingDataAdapter<Favorite, FavoriteAdapter.FavoriteViewHolder>(DIFF_CALLBACK) {
 
     private lateinit var onItemClickCallback: OnItemClickCallback
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: FavoriteEntity)
+        fun onItemClicked(data: Favorite)
     }
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
@@ -29,7 +29,7 @@ class FavoriteAdapter :
 
     inner class FavoriteViewHolder(private val binding: ItemListFavoriteBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: FavoriteEntity) {
+        fun bind(data: Favorite) {
             binding.contentTitle.text = data.title
             binding.contentType.text = data.mediaType.uppercase(Locale.getDefault())
 
@@ -76,17 +76,17 @@ class FavoriteAdapter :
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<FavoriteEntity>() {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Favorite>() {
             override fun areItemsTheSame(
-                oldItem: FavoriteEntity,
-                newItem: FavoriteEntity
+                oldItem: Favorite,
+                newItem: Favorite
             ): Boolean {
                 return oldItem.itemId == newItem.itemId
             }
 
             override fun areContentsTheSame(
-                oldItem: FavoriteEntity,
-                newItem: FavoriteEntity
+                oldItem: Favorite,
+                newItem: Favorite
             ): Boolean {
                 return oldItem == newItem
             }

@@ -1,16 +1,16 @@
 package com.nixstudio.moviemax.viewmodels
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.nixstudio.moviemax.data.entities.CombinedResultEntity
-import com.nixstudio.moviemax.data.sources.MovieMaxRepository
-import com.nixstudio.moviemax.data.sources.remote.DiscoverMovieResultsItem
-import com.nixstudio.moviemax.data.sources.remote.DiscoverTvResultsItem
+import com.nixstudio.moviemax.domain.model.Combined
+import com.nixstudio.moviemax.domain.model.Movie
+import com.nixstudio.moviemax.domain.model.TvShow
+import com.nixstudio.moviemax.domain.usecase.MovieMaxUseCase
+import kotlinx.coroutines.flow.Flow
 
-class HomeViewModel(private val repo: MovieMaxRepository) : ViewModel() {
-    fun getTvShows(): LiveData<List<DiscoverTvResultsItem>> = repo.getDiscoveryTvShows()
+class HomeViewModel(private val useCase: MovieMaxUseCase) : ViewModel() {
+    fun getTvShows(): Flow<List<TvShow>> = useCase.getDiscoveryTvShows()
 
-    fun getMovies(): LiveData<List<DiscoverMovieResultsItem>> = repo.getDiscoveryMovie()
+    fun getMovies(): Flow<List<Movie>> = useCase.getDiscoveryMovie()
 
-    fun getTrending(): LiveData<List<CombinedResultEntity>> = repo.getTrendingToday()
+    fun getTrending(): Flow<List<Combined>> = useCase.getTrendingToday()
 }
