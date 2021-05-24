@@ -12,8 +12,6 @@
     <string name="language_change_desc">Ubah bahasa dari pengaturan sistem</string>
     <string name="language_header">Bahasa</string>
     <string name="language_option">Pilih Bahasa</string>
-    <string name="poster">poster</string>
-    <string name="test_text">Test Text</string>
     <string name="dummy_title">Godzilla vs. Kong</string>
 
     <string name="lorem_ipsum">
@@ -34,7 +32,6 @@
     <string name="search_header">Cari</string>
     <string name="minutes">%1$s menit</string>
     <string name="backdrop">Backdrop</string>
-    <string name="placeholder_title">Here is a title placeholder</string>
     <string name="search_result_header">Hasil Pencarian: %1$s</string>
     <string name="query_empty_warning">Kolom tidak boleh kosong!</string>
     <string name="search_empty">Tidak ditemukan.</string>
@@ -42,7 +39,6 @@
     <string name="rating">PENILAIAN</string>
     <string name="dummy_rating">6.9 / 10</string>
     <string name="cast">PEMAIN</string>
-    <string name="author">djtyranix</string>
     <string name="reviews">ULASAN</string>
     <string name="no_reviews">Tidak ada ulasan ditemukan.</string>
     <string name="theme">Theme</string>
@@ -51,7 +47,6 @@
     <string name="dark_mode_isenabled">Mode gelap %1$s</string>
     <string name="enabled">aktif</string>
     <string name="disabled">nonaktif</string>
-    <string name="rating_value">%1$s / 10</string>
     <string name="no_cast">Tidak ada informasi pemeran.</string>
     <string name="fav_add_success">Item berhasil ditambahkan ke favorit.</string>
     <string name="fav_del_success">item berhasil dihapus dari favorit.</string>

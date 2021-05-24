@@ -3,9 +3,9 @@ package com.nixstudio.moviemax.viewmodels
 import android.util.Log
 import androidx.lifecycle.*
 import com.hadilq.liveevent.LiveEvent
-import com.nixstudio.moviemax.domain.model.Movie
-import com.nixstudio.moviemax.domain.model.TvShow
-import com.nixstudio.moviemax.domain.usecase.MovieMaxUseCase
+import com.nixstudio.moviemax.core.domain.model.Movie
+import com.nixstudio.moviemax.core.domain.model.TvShow
+import com.nixstudio.moviemax.core.domain.usecase.MovieMaxUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch

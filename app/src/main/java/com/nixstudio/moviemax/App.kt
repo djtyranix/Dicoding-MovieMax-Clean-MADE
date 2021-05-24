@@ -1,7 +1,8 @@
 package com.nixstudio.moviemax
 
 import android.app.Application
-import com.nixstudio.moviemax.utils.modules.*
+import com.nixstudio.moviemax.core.modules.*
+import com.nixstudio.moviemax.modules.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 

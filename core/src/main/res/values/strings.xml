@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rating_value">%1$s / 10</string>
+    <string name="poster">poster</string>
+    <string name="test_text">Test Text</string>
+    <string name="author">djtyranix</string>
+    <string name="dummy_rating">6.9 / 10</string>
+    <string name="placeholder_title">Here is a title placeholder</string>
+    <string name="tv_shows">TV Shows</string>
+    <string name="lorem_ipsum">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu arcu vel enim vehicula congue. Phasellus a convallis ante, sit amet mattis nulla. Cras malesuada feugiat lorem id malesuada. In orci est, tristique quis malesuada sit amet, vulputate sed nunc. Donec eget tortor sem. Sed eu pharetra justo, at porttitor lacus. In fringilla suscipit ligula, ac eleifend lorem volutpat quis. Maecenas laoreet, ex nec viverra tempus, lectus nulla fringilla purus, sed venenatis diam arcu at leo.
+    </string>
+</resources>

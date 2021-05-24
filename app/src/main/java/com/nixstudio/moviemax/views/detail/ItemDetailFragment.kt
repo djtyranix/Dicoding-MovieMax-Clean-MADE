@@ -25,12 +25,12 @@ import com.facebook.shimmer.ShimmerDrawable
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.nixstudio.moviemax.R
+import com.nixstudio.moviemax.core.domain.model.Movie
+import com.nixstudio.moviemax.core.domain.model.TvShow
+import com.nixstudio.moviemax.core.ui.detail.CastAdapter
+import com.nixstudio.moviemax.core.ui.detail.ReviewAdapter
+import com.nixstudio.moviemax.core.utils.EspressoIdlingResource
 import com.nixstudio.moviemax.databinding.ItemDetailFragmentBinding
-import com.nixstudio.moviemax.domain.model.Cast
-import com.nixstudio.moviemax.domain.model.Movie
-import com.nixstudio.moviemax.domain.model.Review
-import com.nixstudio.moviemax.domain.model.TvShow
-import com.nixstudio.moviemax.utils.EspressoIdlingResource
 import com.nixstudio.moviemax.viewmodels.ItemDetailViewModel
 import com.nixstudio.moviemax.views.MainActivity
 import kotlinx.coroutines.flow.collectLatest
@@ -228,7 +228,7 @@ class ItemDetailFragment : Fragment() {
 
         tvTitle.text = movie.title
         if (!movie.genres.isNullOrEmpty()) {
-            tvGenre.text = movie.genres[0]?.name
+            tvGenre.text = movie.genres!![0].name
         } else {
             tvGenre.text = resources.getString(R.string.not_set)
         }
@@ -237,14 +237,14 @@ class ItemDetailFragment : Fragment() {
             binding.rvCast.visibility = View.GONE
             binding.tvNoCastInfo.visibility = View.VISIBLE
         } else {
-            castAdapter.setCasts(movie.credits as List<Cast>?)
+            castAdapter.setCasts(movie.credits)
         }
 
         if (movie.reviews.isNullOrEmpty()) {
             binding.rvReview.visibility = View.GONE
             binding.tvNoReviews.visibility = View.VISIBLE
         } else {
-            reviewAdapter.setReviews(movie.reviews as List<Review>?)
+            reviewAdapter.setReviews(movie.reviews)
         }
 
         collapsingToolbarLayout.title = movie.title
@@ -274,14 +274,14 @@ class ItemDetailFragment : Fragment() {
             binding.rvCast.visibility = View.GONE
             binding.tvNoCastInfo.visibility = View.VISIBLE
         } else {
-            castAdapter.setCasts(tvShows.credits as List<Cast>?)
+            castAdapter.setCasts(tvShows.credits)
         }
 
         if (tvShows.reviews.isNullOrEmpty()) {
             binding.rvReview.visibility = View.GONE
             binding.tvNoReviews.visibility = View.VISIBLE
         } else {
-            reviewAdapter.setReviews(tvShows.reviews as List<Review>?)
+            reviewAdapter.setReviews(tvShows.reviews)
         }
 
         collapsingToolbarLayout.title = tvShows.name

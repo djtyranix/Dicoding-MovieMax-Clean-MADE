@@ -101,7 +101,7 @@
     </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.nixstudio.moviemax.views.favorite.FavoriteFragment"
+        android:name="com.nixstudio.moviemax.favorite.ui.FavoriteFragment"
         android:label="favorite_fragment"
         tools:layout="@layout/favorite_fragment">
         <action
@@ -119,11 +119,11 @@
         tools:layout="@layout/item_detail_fragment" >
         <argument
             android:name="movie"
-            app:argType="com.nixstudio.moviemax.domain.model.Movie"
+            app:argType="com.nixstudio.moviemax.core.domain.model.Movie"
             app:nullable="true" />
         <argument
             android:name="tv_show"
-            app:argType="com.nixstudio.moviemax.domain.model.TvShow"
+            app:argType="com.nixstudio.moviemax.core.domain.model.TvShow"
             app:nullable="true" />
     </fragment>
 </navigation>

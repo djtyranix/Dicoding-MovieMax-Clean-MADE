@@ -1,2 +1,4 @@
 include ':app'
 rootProject.name = "MovieMax"
+include ':core'
+include ':favorite'

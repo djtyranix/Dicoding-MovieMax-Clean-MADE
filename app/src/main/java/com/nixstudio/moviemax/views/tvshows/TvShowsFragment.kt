@@ -10,9 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.nixstudio.moviemax.core.domain.model.TvShow
+import com.nixstudio.moviemax.core.ui.tvshow.TvShowsAdapter
+import com.nixstudio.moviemax.core.utils.EspressoIdlingResource
 import com.nixstudio.moviemax.databinding.TvShowsFragmentBinding
-import com.nixstudio.moviemax.domain.model.TvShow
-import com.nixstudio.moviemax.utils.EspressoIdlingResource
 import com.nixstudio.moviemax.viewmodels.TvShowsViewModel
 import com.nixstudio.moviemax.views.MainActivity
 import kotlinx.coroutines.flow.collectLatest
