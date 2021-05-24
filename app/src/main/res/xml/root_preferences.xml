@@ -14,6 +14,7 @@
             app:entryValues="@array/theme_list_values"
             app:key="mode_switch"
             app:summary="%s"
+            app:defaultValue="system"
             app:title="@string/mode_switch" />
     </PreferenceCategory>
 </PreferenceScreen>
