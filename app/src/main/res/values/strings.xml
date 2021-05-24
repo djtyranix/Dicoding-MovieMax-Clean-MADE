@@ -56,10 +56,24 @@
     <string name="fav_del_success">Item successfully removed from favorite.</string>
     <string name="your_favorites">Your Favorites</string>
     <string name="dark_mode_summary_off">Turn off dark mode</string>
+    <string name="mode_switch">App Theme</string>
+    <string name="mode_switch_summary">Change app theme</string>
 
     <string-array name="sort_category">
         <item>All</item>
         <item>Movies</item>
         <item>TV Shows</item>
+    </string-array>
+
+    <string-array name="theme_list">
+        <item>Light</item>
+        <item>Dark</item>
+        <item>System Default</item>
+    </string-array>
+
+    <string-array name="theme_list_values">
+        <item>light</item>
+        <item>dark</item>
+        <item>system</item>
     </string-array>
 </resources>

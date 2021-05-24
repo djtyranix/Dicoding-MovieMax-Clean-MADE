@@ -4,17 +4,16 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreference
 import com.nixstudio.moviemax.R
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
     private var languageChange: Preference? = null
-    private var darkModeSwitch: SwitchPreference? = null
+    private var darkModeSwitch: ListPreference? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
@@ -27,60 +26,65 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val languageIntent = Intent(Settings.ACTION_LOCALE_SETTINGS)
         languageChange?.intent = languageIntent
 
-        darkModeSwitch = findPreference("enable_dark_mode")
-        val isDarkModeEnabled = preference?.getBoolean("isDarkModeEnabled", false)
+        darkModeSwitch = findPreference("mode_switch")
+        when (preference?.getString("darkMode", "system")) {
+            "dark" -> {
+                AppCompatDelegate
+                    .setDefaultNightMode(
+                        AppCompatDelegate.MODE_NIGHT_YES
+                    )
+            }
 
-        if (isDarkModeEnabled == true) {
-            AppCompatDelegate
-                .setDefaultNightMode(
-                    AppCompatDelegate.MODE_NIGHT_YES
-                )
-        } else {
-            AppCompatDelegate
-                .setDefaultNightMode(
-                    AppCompatDelegate.MODE_NIGHT_NO
-                )
+            "light" -> {
+                AppCompatDelegate
+                    .setDefaultNightMode(
+                        AppCompatDelegate.MODE_NIGHT_NO
+                    )
+            }
+
+            else -> {
+                AppCompatDelegate
+                    .setDefaultNightMode(
+                        AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                    )
+            }
         }
 
         darkModeSwitch?.onPreferenceChangeListener =
-            Preference.OnPreferenceChangeListener { _, _ ->
-                if (darkModeSwitch?.isChecked == true) {
-                    AppCompatDelegate
-                        .setDefaultNightMode(
-                            AppCompatDelegate.MODE_NIGHT_NO
-                        )
+            Preference.OnPreferenceChangeListener { _, newValue ->
+                when (newValue) {
+                    "light" -> {
+                        AppCompatDelegate
+                            .setDefaultNightMode(
+                                AppCompatDelegate.MODE_NIGHT_NO
+                            )
 
-                    editor?.putBoolean("isDarkModeEnabled", false)
-                    editor?.apply()
-                    darkModeSwitch?.isChecked = false
-                    Toast.makeText(
-                        activity,
-                        resources.getString(
-                            R.string.dark_mode_isenabled,
-                            resources.getString(R.string.disabled)
-                        ),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    AppCompatDelegate
-                        .setDefaultNightMode(
-                            AppCompatDelegate.MODE_NIGHT_YES
-                        )
+                        editor?.putString("darkMode", "light")
+                        editor?.apply()
+                    }
 
-                    editor?.putBoolean("isDarkModeEnabled", true)
-                    editor?.apply()
-                    darkModeSwitch?.isChecked = true
-                    Toast.makeText(
-                        activity,
-                        resources.getString(
-                            R.string.dark_mode_isenabled,
-                            resources.getString(R.string.enabled)
-                        ),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    "dark" -> {
+                        AppCompatDelegate
+                            .setDefaultNightMode(
+                                AppCompatDelegate.MODE_NIGHT_YES
+                            )
+
+                        editor?.putString("darkMode", "dark")
+                        editor?.apply()
+                    }
+
+                    else -> {
+                        AppCompatDelegate
+                            .setDefaultNightMode(
+                                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                            )
+
+                        editor?.putString("darkMode", "system")
+                        editor?.apply()
+                    }
                 }
 
-                false
+                return@OnPreferenceChangeListener true
             }
     }
 }

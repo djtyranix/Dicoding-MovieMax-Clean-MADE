@@ -57,10 +57,24 @@
     <string name="fav_del_success">item berhasil dihapus dari favorit.</string>
     <string name="your_favorites">Your Favorites</string>
     <string name="dark_mode_summary_off">Matikan mode gelap</string>
+    <string name="mode_switch">Tema Aplikasi</string>
+    <string name="mode_switch_summary">Ubah tema aplikasi</string>
 
     <string-array name="sort_category">
         <item>Semua</item>
         <item>Film</item>
         <item>Serial</item>
+    </string-array>
+
+    <string-array name="theme_list">
+        <item>Terang</item>
+        <item>Gelap</item>
+        <item>Seperti Sistem</item>
+    </string-array>
+
+    <string-array name="theme_list_values">
+        <item>light</item>
+        <item>dark</item>
+        <item>system</item>
     </string-array>
 </resources>

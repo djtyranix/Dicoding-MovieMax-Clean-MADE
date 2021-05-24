@@ -9,10 +9,11 @@
 
     <PreferenceCategory app:title="@string/theme">
 
-        <SwitchPreference
-            app:key="enable_dark_mode"
-            app:summaryOff="@string/dark_mode_summary"
-            app:summaryOn="@string/dark_mode_summary_off"
-            app:title="@string/dark_mode" />
+        <ListPreference
+            app:entries="@array/theme_list"
+            app:entryValues="@array/theme_list_values"
+            app:key="mode_switch"
+            app:summary="%s"
+            app:title="@string/mode_switch" />
     </PreferenceCategory>
 </PreferenceScreen>

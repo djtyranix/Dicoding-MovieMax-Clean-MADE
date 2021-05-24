@@ -23,18 +23,28 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launchWhenCreated {
             val preference =
                 this@MainActivity.getSharedPreferences("moviemax-prefs", Context.MODE_PRIVATE)
-            val isDarkModeEnabled = preference.getBoolean("isDarkModeEnabled", false)
 
-            if (isDarkModeEnabled) {
-                AppCompatDelegate
-                    .setDefaultNightMode(
-                        AppCompatDelegate.MODE_NIGHT_YES
-                    )
-            } else {
-                AppCompatDelegate
-                    .setDefaultNightMode(
-                        AppCompatDelegate.MODE_NIGHT_NO
-                    )
+            when (preference.getString("darkMode", "system")) {
+                "dark" -> {
+                    AppCompatDelegate
+                        .setDefaultNightMode(
+                            AppCompatDelegate.MODE_NIGHT_YES
+                        )
+                }
+
+                "light" -> {
+                    AppCompatDelegate
+                        .setDefaultNightMode(
+                            AppCompatDelegate.MODE_NIGHT_NO
+                        )
+                }
+
+                else -> {
+                    AppCompatDelegate
+                        .setDefaultNightMode(
+                            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                        )
+                }
             }
 
             setContentView(R.layout.activity_main)
