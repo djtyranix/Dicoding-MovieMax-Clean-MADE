@@ -6,7 +6,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class DiscoverTvResponse(
-
     @field:SerializedName("page")
     val page: Int? = null,
 
@@ -15,14 +14,10 @@ data class DiscoverTvResponse(
 
     @field:SerializedName("results")
     val results: List<DiscoverTvResultsItem?>? = null,
-
-    @field:SerializedName("total_results")
-    val totalResults: Int? = null
 ) : Parcelable
 
 @Parcelize
 data class DiscoverTvResultsItem(
-
     @field:SerializedName("overview")
     val overview: String? = null,
 

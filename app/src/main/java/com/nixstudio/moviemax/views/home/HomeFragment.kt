@@ -25,13 +25,15 @@ import com.nixstudio.moviemax.core.utils.hideKeyboard
 import com.nixstudio.moviemax.databinding.FragmentHomeBinding
 import com.nixstudio.moviemax.viewmodels.HomeViewModel
 import com.nixstudio.moviemax.views.MainActivity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment(), View.OnClickListener {
     private var _binding: FragmentHomeBinding? = null
-    val binding get() = _binding!!
+    private val binding get() = _binding!!
     private val viewModel by viewModel<HomeViewModel>()
     private lateinit var trendingViewAdapter: HomeTrendingAdapter
     private lateinit var movieViewAdapter: HomeMovieAdapter
@@ -70,9 +72,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 adapter = tvViewAdapter
                 setHasFixedSize(true)
             }
-
-            binding.seeAllMovies.setOnClickListener(this@HomeFragment)
-            binding.seeAllTv.setOnClickListener(this@HomeFragment)
 
             val searchManager =
                 (activity as MainActivity).getSystemService(Context.SEARCH_SERVICE) as SearchManager
@@ -114,6 +113,29 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 Log.d("Closed", "Closed")
                 true
             }
+        }
+
+        hideKeyboard()
+
+        val currentActivity = activity as MainActivity?
+        val toolbar = binding.homeToolbar.toolbarHome
+        currentActivity?.setSupportActionBar(toolbar)
+        currentActivity?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        currentActivity?.setActionBarTitle(" ")
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        EspressoIdlingResource.increment()
+        EspressoIdlingResource.increment()
+        EspressoIdlingResource.increment()
+
+        lifecycleScope.launch(Dispatchers.Default) {
+            binding.seeAllMovies.setOnClickListener(this@HomeFragment)
+            binding.seeAllTv.setOnClickListener(this@HomeFragment)
 
             trendingViewAdapter.setOnItemClickCallback(object :
                 HomeTrendingAdapter.OnItemClickCallback {
@@ -153,25 +175,21 @@ class HomeFragment : Fragment(), View.OnClickListener {
                     showTvDetail(data)
                 }
             })
-        }
 
-        EspressoIdlingResource.increment()
-        EspressoIdlingResource.increment()
-        EspressoIdlingResource.increment()
-
-        lifecycleScope.launch {
             viewModel.getTrending().collectLatest { item ->
                 if (!item.isNullOrEmpty()) {
                     if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
                         //Memberitahukan bahwa tugas sudah selesai dijalankan
                         EspressoIdlingResource.decrement()
                     }
-                    trendingViewAdapter.setTrendingData(item.take(7))
+                    withContext(Dispatchers.Main) {
+                        trendingViewAdapter.setTrendingData(item.take(7))
 
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        binding.rvTrending.visibility = View.VISIBLE
-                        binding.rvTrendingShimmer.visibility = View.GONE
-                    }, 500)
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            binding.rvTrending.visibility = View.VISIBLE
+                            binding.rvTrendingShimmer.visibility = View.GONE
+                        }, 300)
+                    }
                 }
             }
 
@@ -181,12 +199,14 @@ class HomeFragment : Fragment(), View.OnClickListener {
                         //Memberitahukan bahwa tugas sudah selesai dijalankan
                         EspressoIdlingResource.decrement()
                     }
-                    movieViewAdapter.setMovies(movieItem.take(7))
+                    withContext(Dispatchers.Main) {
+                        movieViewAdapter.setMovies(movieItem.take(7))
 
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        binding.rvMovie.visibility = View.VISIBLE
-                        binding.rvMovieShimmer.visibility = View.GONE
-                    }, 500)
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            binding.rvMovie.visibility = View.VISIBLE
+                            binding.rvMovieShimmer.visibility = View.GONE
+                        }, 300)
+                    }
                 }
             }
 
@@ -196,25 +216,18 @@ class HomeFragment : Fragment(), View.OnClickListener {
                         //Memberitahukan bahwa tugas sudah selesai dijalankan
                         EspressoIdlingResource.decrement()
                     }
-                    tvViewAdapter.setTv(tvItem.take(7))
 
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        binding.rvTvshows.visibility = View.VISIBLE
-                        binding.rvTvShimmer.visibility = View.GONE
-                    }, 500)
+                    withContext(Dispatchers.Main) {
+                        tvViewAdapter.setTv(tvItem.take(7))
+
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            binding.rvTvshows.visibility = View.VISIBLE
+                            binding.rvTvShimmer.visibility = View.GONE
+                        }, 300)
+                    }
                 }
             }
         }
-
-        hideKeyboard()
-
-        val currentActivity = activity as MainActivity?
-        val toolbar = binding.homeToolbar.toolbarHome
-        currentActivity?.setSupportActionBar(toolbar)
-        currentActivity?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        currentActivity?.setActionBarTitle(" ")
-
-        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

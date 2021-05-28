@@ -3,8 +3,6 @@ package com.nixstudio.moviemax.views.detail
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
@@ -33,8 +31,10 @@ import com.nixstudio.moviemax.core.utils.EspressoIdlingResource
 import com.nixstudio.moviemax.databinding.ItemDetailFragmentBinding
 import com.nixstudio.moviemax.viewmodels.ItemDetailViewModel
 import com.nixstudio.moviemax.views.MainActivity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ItemDetailFragment : Fragment() {
@@ -120,11 +120,24 @@ class ItemDetailFragment : Fragment() {
             shimmerDrawable = ShimmerDrawable().apply {
                 setShimmer(shimmer)
             }
+        }
 
+        val currentActivity = activity as MainActivity
+        val toolbar = binding.detailToolbar
+        currentActivity.setSupportActionBar(toolbar)
+        currentActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        lifecycleScope.launch(Dispatchers.Default) {
             if (currentMovie != null) {
                 val id = currentMovie?.id
                 if (id != null) {
-                    lifecycleScope.launch {
+                    withContext(Dispatchers.Main) {
                         viewModel.getCurrentMovie(id).collectLatest { movie ->
                             setMovieData(movie)
                         }
@@ -133,7 +146,7 @@ class ItemDetailFragment : Fragment() {
             } else if (currentTvShows != null) {
                 val id = currentTvShows?.id
                 if (id != null) {
-                    lifecycleScope.launch {
+                    withContext(Dispatchers.Main) {
                         viewModel.getCurrentTvShows(id).collectLatest { tvShows ->
                             setTvShows(tvShows)
                         }
@@ -150,20 +163,11 @@ class ItemDetailFragment : Fragment() {
                     EspressoIdlingResource.decrement()
                 }
 
-                Handler(Looper.getMainLooper()).postDelayed({
-                    binding.detailShimmer.visibility = View.GONE
-                    binding.itemDetails.visibility = View.VISIBLE
-                    binding.detailAppbar.visibility = View.VISIBLE
-                }, 500)
+                binding.detailShimmer.visibility = View.GONE
+                binding.itemDetails.visibility = View.VISIBLE
+                binding.detailAppbar.visibility = View.VISIBLE
             }
         })
-
-        val currentActivity = activity as MainActivity
-        val toolbar = binding.detailToolbar
-        currentActivity.setSupportActionBar(toolbar)
-        currentActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        return binding.root
     }
 
     private fun ImageView.loadImage(url: String?, type: String) {

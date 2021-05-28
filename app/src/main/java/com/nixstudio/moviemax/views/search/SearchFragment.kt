@@ -6,6 +6,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -28,7 +29,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SearchFragment : Fragment() {
 
     private var _binding: SearchFragmentBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
     private val viewModel by viewModel<SearchViewModel>()
     private lateinit var viewAdapter: SearchResultAdapter
     private val args: SearchFragmentArgs by navArgs()
@@ -43,7 +44,7 @@ class SearchFragment : Fragment() {
             viewAdapter = SearchResultAdapter()
             viewAdapter.notifyDataSetChanged()
 
-            binding.rvSearchResult.apply {
+            binding?.rvSearchResult?.apply {
                 layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
                 adapter = viewAdapter
                 setHasFixedSize(true)
@@ -89,8 +90,8 @@ class SearchFragment : Fragment() {
                     viewAdapter.setSearchResult(item)
 
                     Handler(Looper.getMainLooper()).postDelayed({
-                        binding.rvSearchResult.visibility = View.VISIBLE
-                        binding.rvSearchShimmer.visibility = View.GONE
+                        binding?.rvSearchResult?.visibility = View.VISIBLE
+                        binding?.rvSearchShimmer?.visibility = View.GONE
                     }, 500)
                 } else {
                     if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
@@ -99,17 +100,17 @@ class SearchFragment : Fragment() {
                     }
 
                     Handler(Looper.getMainLooper()).postDelayed({
-                        binding.rvSearchShimmer.visibility = View.GONE
-                        binding.rvSearchResult.visibility = View.GONE
-                        binding.emptySearchPlaceholder.visibility = View.VISIBLE
-                        binding.emptySearchInfo.visibility = View.VISIBLE
+                        binding?.rvSearchShimmer?.visibility = View.GONE
+                        binding?.rvSearchResult?.visibility = View.GONE
+                        binding?.emptySearchPlaceholder?.visibility = View.VISIBLE
+                        binding?.emptySearchInfo?.visibility = View.VISIBLE
                     }, 500)
                 }
             }
         }
 
         val currentActivity = activity as MainActivity
-        val toolbar = binding.homeToolbar.toolbarHome
+        val toolbar = binding?.homeToolbar?.toolbarHome
         currentActivity.setSupportActionBar(toolbar)
         currentActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         currentActivity.setActionBarTitle(
@@ -119,7 +120,7 @@ class SearchFragment : Fragment() {
             )
         )
 
-        return binding.root
+        return binding?.root as ConstraintLayout
     }
 
     private fun showMovieDetail(data: Movie) {

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -22,15 +23,18 @@ import com.nixstudio.moviemax.favorite.databinding.FavoriteFragmentBinding
 import com.nixstudio.moviemax.favorite.module.favoriteModule
 import com.nixstudio.moviemax.favorite.viewmodel.FavoriteViewModel
 import com.nixstudio.moviemax.views.MainActivity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
+import org.koin.core.context.unloadKoinModules
 
 class FavoriteFragment : Fragment() {
 
     private var _binding: FavoriteFragmentBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
     private val viewModel by viewModel<FavoriteViewModel>()
     private lateinit var viewAdapter: FavoriteAdapter
     private var isSpinnerInitialized = false
@@ -50,7 +54,7 @@ class FavoriteFragment : Fragment() {
             viewAdapter = FavoriteAdapter()
             viewAdapter.notifyDataSetChanged()
 
-            binding.rvFavorite.apply {
+            binding?.rvFavorite?.apply {
                 layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
                 adapter = viewAdapter
                 setHasFixedSize(true)
@@ -90,7 +94,19 @@ class FavoriteFragment : Fragment() {
             }
         }
 
-        binding.sortSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        val currentActivity = activity as MainActivity
+        val toolbar = binding?.homeToolbar?.toolbarHome
+        currentActivity.setSupportActionBar(toolbar)
+        currentActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        currentActivity.setActionBarTitle(resources.getString(R.string.favorite))
+
+        return binding?.root as ConstraintLayout
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding?.sortSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -102,7 +118,7 @@ class FavoriteFragment : Fragment() {
                     return
                 }
 
-                lifecycleScope.launch {
+                lifecycleScope.launch(Dispatchers.IO) {
                     when (id) {
                         0L -> {
                             viewModel.getFavorites().collectLatest {
@@ -110,7 +126,9 @@ class FavoriteFragment : Fragment() {
                                     EspressoIdlingResource.decrement()
                                 }
 
-                                viewAdapter.submitData(it)
+                                withContext(Dispatchers.Main) {
+                                    viewAdapter.submitData(it)
+                                }
                             }
                         }
                         1L -> {
@@ -120,7 +138,9 @@ class FavoriteFragment : Fragment() {
                                         EspressoIdlingResource.decrement()
                                     }
 
-                                    viewAdapter.submitData(it)
+                                    withContext(Dispatchers.Main) {
+                                        viewAdapter.submitData(it)
+                                    }
                                 }
                         }
                         else -> {
@@ -130,7 +150,9 @@ class FavoriteFragment : Fragment() {
                                         EspressoIdlingResource.decrement()
                                     }
 
-                                    viewAdapter.submitData(it)
+                                    withContext(Dispatchers.Main) {
+                                        viewAdapter.submitData(it)
+                                    }
                                 }
                         }
                     }
@@ -150,36 +172,28 @@ class FavoriteFragment : Fragment() {
                 }
             }
         }
-
-        val currentActivity = activity as MainActivity
-        val toolbar = binding.homeToolbar.toolbarHome
-        currentActivity.setSupportActionBar(toolbar)
-        currentActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        currentActivity.setActionBarTitle(resources.getString(R.string.favorite))
-
-        return binding.root
     }
 
     private fun checkIsListEmpty(count: Int) {
         if (count > 0) {
             Handler(Looper.getMainLooper()).postDelayed({
-                binding.rvFavorite.visibility = View.VISIBLE
-                binding.view2.visibility = View.VISIBLE
-                binding.sortSpinner.visibility = View.VISIBLE
-                binding.textView.visibility = View.VISIBLE
-                binding.rvFavoriteShimmer.visibility = View.GONE
-                binding.emptyFavoritePlaceholder.visibility = View.GONE
-                binding.emptyFavoriteInfo.visibility = View.GONE
+                binding?.rvFavorite?.visibility = View.VISIBLE
+                binding?.view2?.visibility = View.VISIBLE
+                binding?.sortSpinner?.visibility = View.VISIBLE
+                binding?.textView?.visibility = View.VISIBLE
+                binding?.rvFavoriteShimmer?.visibility = View.GONE
+                binding?.emptyFavoritePlaceholder?.visibility = View.GONE
+                binding?.emptyFavoriteInfo?.visibility = View.GONE
             }, 500)
         } else {
             Handler(Looper.getMainLooper()).postDelayed({
-                binding.textView.visibility = View.VISIBLE
-                binding.view2.visibility = View.VISIBLE
-                binding.sortSpinner.visibility = View.VISIBLE
-                binding.rvFavoriteShimmer.visibility = View.GONE
-                binding.rvFavorite.visibility = View.GONE
-                binding.emptyFavoritePlaceholder.visibility = View.VISIBLE
-                binding.emptyFavoriteInfo.visibility = View.VISIBLE
+                binding?.textView?.visibility = View.VISIBLE
+                binding?.view2?.visibility = View.VISIBLE
+                binding?.sortSpinner?.visibility = View.VISIBLE
+                binding?.rvFavoriteShimmer?.visibility = View.GONE
+                binding?.rvFavorite?.visibility = View.GONE
+                binding?.emptyFavoritePlaceholder?.visibility = View.VISIBLE
+                binding?.emptyFavoriteInfo?.visibility = View.VISIBLE
             }, 500)
         }
     }
@@ -194,5 +208,10 @@ class FavoriteFragment : Fragment() {
         val toDetailItemActivity =
             FavoriteFragmentDirections.actionFavoriteFragmentToItemDetailFragment(null, data)
         view?.findNavController()?.navigate(toDetailItemActivity)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unloadKoinModules(favoriteModule)
     }
 }
