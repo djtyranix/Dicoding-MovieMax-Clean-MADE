@@ -1,7 +1,7 @@
 package com.nixstudio.moviemax.core.data.sources.remote
 
 import android.util.Log
-import com.nixstudio.moviemax.core.BuildConfig
+import com.nixstudio.moviemax.Secrets
 import com.nixstudio.moviemax.core.data.entities.CombinedResultEntity
 import com.nixstudio.moviemax.core.data.entities.MovieEntity
 import com.nixstudio.moviemax.core.data.entities.TvShowsEntity
@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class RemoteDataSource(private val api: ApiService) {
-    private val apiKey = BuildConfig.API_KEY
+    private val apiKey = Secrets().getApiKey("com.nixstudio.moviemax")
     private val includeAdult = true
     private val sortBy = "popularity.desc"
     private val appendToResponse = "credits,reviews"
