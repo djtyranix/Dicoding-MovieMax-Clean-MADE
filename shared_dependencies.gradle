@@ -58,4 +58,7 @@ dependencies {
 
 //    LIVE EVENT
     implementation "com.github.hadilq:live-event:1.2.3"
+
+//    LEAK CANARY
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 }

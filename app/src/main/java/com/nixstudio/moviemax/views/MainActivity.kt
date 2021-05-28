@@ -57,8 +57,7 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if (navHostFragment.childFragmentManager.backStackEntryCount == 0) {
             if (doubleBackToExitOnce) {
-                super.onBackPressed()
-                finish()
+                finishAfterTransition()
                 return
             }
 

@@ -31,4 +31,8 @@ class SettingsActivity : AppCompatActivity() {
         onBackPressed()
         return true
     }
+
+    override fun onBackPressed() {
+        finishAfterTransition()
+    }
 }
