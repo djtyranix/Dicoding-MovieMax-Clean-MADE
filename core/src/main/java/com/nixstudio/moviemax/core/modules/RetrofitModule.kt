@@ -3,6 +3,7 @@ package com.nixstudio.moviemax.core.modules
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import okhttp3.CertificatePinner
 import okhttp3.OkHttpClient
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -15,9 +16,16 @@ val retrofitModule = module {
     }
 
     fun provideHttpClient(): OkHttpClient {
-        val okHttpClientBuilder = OkHttpClient.Builder()
+        val hostname = "api.themoviedb.org"
+        val certificatePinner = CertificatePinner.Builder()
+            .add(hostname, "sha256/+vqZVAzTqUP8BGkfl88yU7SQ3C8J2uNEa55B7RZjEg0=")
+            .add(hostname, "sha256/JSMzqOOrtyOT1kmau6zKhgT676hGgczD5VMdRMyJZFA=")
+            .add(hostname, "sha256/++MBgDH5WGvL9Bcn5Be30cRcL0f5O+NyoXuWtQdX1aI=")
+            .build()
 
-        return okHttpClientBuilder.build()
+        return OkHttpClient.Builder()
+            .certificatePinner(certificatePinner)
+            .build()
     }
 
     fun provideRetrofit(factory: Gson, client: OkHttpClient): Retrofit {

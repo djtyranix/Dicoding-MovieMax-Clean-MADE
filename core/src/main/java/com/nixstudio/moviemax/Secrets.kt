@@ -12,4 +12,6 @@ class Secrets {
     }
 
     external fun getApiKey(packageName: String): String
+
+    external fun getPass(packageName: String): String
 }

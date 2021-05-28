@@ -108,7 +108,7 @@ object DataMapper {
                 )
             }
         } else {
-            return ArrayList<Review>()
+            return ArrayList()
         }
     }
 
@@ -148,7 +148,7 @@ object DataMapper {
                 )
             }
         } else {
-            ArrayList<Genre>()
+            ArrayList()
         }
     }
 }
