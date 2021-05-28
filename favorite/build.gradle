@@ -26,6 +26,9 @@ android {
         release {
             minifyEnabled false
             consumerProguardFiles 'lib-proguard-rules.txt'
+            ndk {
+                debugSymbolLevel 'SYMBOL_TABLE'
+            }
         }
     }
 
