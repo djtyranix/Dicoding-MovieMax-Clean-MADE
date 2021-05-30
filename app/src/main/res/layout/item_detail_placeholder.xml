@@ -6,12 +6,12 @@
     android:scrollbars="none">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/item_detail_placeholder"
+        android:id="@+id/placeholder_item_detail_placeholder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/img_backdrop_placeholder"
+            android:id="@+id/placeholder_img_backdrop_placeholder"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/shimmer_bgcolor"
@@ -24,7 +24,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_playtime_season_title_placeholder"
+            android:id="@+id/placeholder_tv_playtime_season_title_placeholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -34,15 +34,15 @@
             android:text="@string/playtime_season_title_dummy"
             android:textColor="@color/shimmer_bgcolor"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/cardView2"
+            app:layout_constraintBottom_toBottomOf="@+id/placeholder_cardView2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/cardView2"
-            app:layout_constraintTop_toBottomOf="@+id/view4"
+            app:layout_constraintStart_toEndOf="@+id/placeholder_cardView2"
+            app:layout_constraintTop_toBottomOf="@+id/placeholder_view4"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-            android:id="@+id/item_title_placeholder"
+            android:id="@+id/placeholder_item_title_placeholder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -54,10 +54,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/img_backdrop_placeholder" />
+            app:layout_constraintTop_toBottomOf="@+id/placeholder_img_backdrop_placeholder" />
 
         <View
-            android:id="@+id/view2"
+            android:id="@+id/placeholder_view2"
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
             android:layout_marginStart="16dp"
@@ -68,10 +68,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/item_title_placeholder" />
+            app:layout_constraintTop_toBottomOf="@+id/placeholder_item_title_placeholder" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView2"
+            android:id="@+id/placeholder_cardView2"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
@@ -84,12 +84,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view2"
+            app:layout_constraintTop_toBottomOf="@+id/placeholder_view2"
             app:layout_constraintVertical_bias="0.0"
             app:layout_constraintWidth_percent=".45">
 
             <ImageView
-                android:id="@+id/img_poster_detail_placeholder"
+                android:id="@+id/placeholder_img_poster_detail_placeholder"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/shimmer_bgcolor"
@@ -98,7 +98,7 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/placeholder_textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -108,15 +108,15 @@
             android:text="@string/year_of_release"
             android:textColor="@color/shimmer_bgcolor"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/cardView2"
+            app:layout_constraintBottom_toBottomOf="@+id/placeholder_cardView2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/cardView2"
-            app:layout_constraintTop_toTopOf="@+id/cardView2"
+            app:layout_constraintStart_toEndOf="@+id/placeholder_cardView2"
+            app:layout_constraintTop_toTopOf="@+id/placeholder_cardView2"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/placeholder_textView12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -125,13 +125,13 @@
             android:text="@string/dummy_overview_title"
             android:textColor="@color/shimmer_bgcolor"
             android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@+id/cardView2"
+            app:layout_constraintEnd_toEndOf="@+id/placeholder_cardView2"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/cardView2"
-            app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+            app:layout_constraintStart_toStartOf="@+id/placeholder_cardView2"
+            app:layout_constraintTop_toBottomOf="@+id/placeholder_cardView2" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/placeholder_textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -143,11 +143,11 @@
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/cardView2"
-            app:layout_constraintTop_toBottomOf="@+id/view3" />
+            app:layout_constraintStart_toEndOf="@+id/placeholder_cardView2"
+            app:layout_constraintTop_toBottomOf="@+id/placeholder_view3" />
 
         <TextView
-            android:id="@+id/tv_year_placeholder"
+            android:id="@+id/placeholder_tv_year_placeholder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -159,11 +159,11 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textView2"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            app:layout_constraintStart_toStartOf="@+id/placeholder_textView2"
+            app:layout_constraintTop_toBottomOf="@+id/placeholder_textView2" />
 
         <TextView
-            android:id="@+id/tv_genre_placeholder"
+            android:id="@+id/placeholder_tv_genre_placeholder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -175,11 +175,11 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textView4"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintStart_toStartOf="@+id/placeholder_textView4"
+            app:layout_constraintTop_toBottomOf="@+id/placeholder_textView4" />
 
         <TextView
-            android:id="@+id/tv_playtime_season_placeholder"
+            android:id="@+id/placeholder_tv_playtime_season_placeholder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -191,22 +191,22 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/tv_playtime_season_title_placeholder"
-            app:layout_constraintTop_toBottomOf="@+id/tv_playtime_season_title_placeholder" />
+            app:layout_constraintStart_toStartOf="@+id/placeholder_tv_playtime_season_title_placeholder"
+            app:layout_constraintTop_toBottomOf="@+id/placeholder_tv_playtime_season_title_placeholder" />
 
         <View
-            android:id="@+id/view3"
+            android:id="@+id/placeholder_view3"
             android:layout_width="0dp"
             android:layout_height="0.05dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:background="@android:color/darker_gray"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_year_placeholder"
-            app:layout_constraintTop_toBottomOf="@+id/tv_year_placeholder" />
+            app:layout_constraintStart_toStartOf="@+id/placeholder_tv_year_placeholder"
+            app:layout_constraintTop_toBottomOf="@+id/placeholder_tv_year_placeholder" />
 
         <View
-            android:id="@+id/view4"
+            android:id="@+id/placeholder_view4"
             android:layout_width="0dp"
             android:layout_height="0.05dp"
             android:layout_marginTop="8dp"
@@ -214,11 +214,11 @@
             android:background="@android:color/darker_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/tv_genre_placeholder"
-            app:layout_constraintTop_toBottomOf="@+id/tv_genre_placeholder" />
+            app:layout_constraintStart_toStartOf="@+id/placeholder_tv_genre_placeholder"
+            app:layout_constraintTop_toBottomOf="@+id/placeholder_tv_genre_placeholder" />
 
         <TextView
-            android:id="@+id/tv_overview_placeholder"
+            android:id="@+id/placeholder_tv_overview_placeholder"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginTop="8dp"
@@ -230,8 +230,8 @@
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textView12"
-            app:layout_constraintTop_toBottomOf="@+id/textView12" />
+            app:layout_constraintStart_toStartOf="@+id/placeholder_textView12"
+            app:layout_constraintTop_toBottomOf="@+id/placeholder_textView12" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
