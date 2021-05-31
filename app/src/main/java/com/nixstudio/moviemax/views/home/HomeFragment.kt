@@ -271,4 +271,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
             }
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

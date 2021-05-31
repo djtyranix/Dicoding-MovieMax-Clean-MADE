@@ -134,4 +134,9 @@ class SearchFragment : Fragment() {
             SearchFragmentDirections.actionSearchFragmentToItemDetailFragment(null, data)
         view?.findNavController()?.navigate(toDetailItemActivity)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

@@ -94,4 +94,9 @@ class TvShowsFragment : Fragment() {
             TvShowsFragmentDirections.actionTvShowsFragmentToItemDetailFragment(null, data)
         view?.findNavController()?.navigate(toDetailItemActivity)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

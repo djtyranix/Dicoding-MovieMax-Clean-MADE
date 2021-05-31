@@ -330,13 +330,13 @@ class ItemDetailFragment : Fragment() {
                     shareIntent.putExtra(Intent.EXTRA_SUBJECT, currentMovie?.title)
                     shareIntent.putExtra(
                         Intent.EXTRA_TEXT,
-                        "${currentMovie?.title}\n\nOverview: ${currentMovie?.overview}"
+                        "${currentMovie?.title}\n\nOverview: ${currentMovie?.overview}\n\nLink: https://themoviedb.org/movie/${currentMovie?.id}"
                     )
                 } else if (currentTvShows != null) {
                     shareIntent.putExtra(Intent.EXTRA_SUBJECT, currentTvShows?.name)
                     shareIntent.putExtra(
                         Intent.EXTRA_TEXT,
-                        "${currentTvShows?.name}\n\nOverview: ${currentTvShows?.overview}"
+                        "${currentTvShows?.name}\n\nOverview: ${currentTvShows?.overview}\n\nLink: https://themoviedb.org/tv/${currentTvShows?.id}"
                     )
                 }
 

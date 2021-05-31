@@ -94,4 +94,9 @@ class MovieFragment : Fragment() {
             MovieFragmentDirections.actionMovieFragmentToItemDetailFragment(data, null)
         view?.findNavController()?.navigate(toDetailItemActivity)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }
