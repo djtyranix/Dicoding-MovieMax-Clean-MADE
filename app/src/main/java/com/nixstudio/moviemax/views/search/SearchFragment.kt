@@ -62,7 +62,7 @@ class SearchFragment : Fragment() {
                         )
 
                         showMovieDetail(movie)
-                    } else {
+                    } else if (data.mediaType == "tv") {
                         val tvShow = TvShow(
                             overview = data.overview,
                             posterPath = data.posterPath,
@@ -82,12 +82,14 @@ class SearchFragment : Fragment() {
         EspressoIdlingResource.increment()
         lifecycleScope.launch {
             viewModel.getSearchResults(args.query).collectLatest { item ->
-                if (!item.isNullOrEmpty()) {
+                val filteredItems = item.filter {
+                    it.mediaType == "movie" || it.mediaType == "tv"
+                }
+                if (!filteredItems.isNullOrEmpty()) {
                     if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
-                        //Memberitahukan bahwa tugas sudah selesai dijalankan
                         EspressoIdlingResource.decrement()
                     }
-                    viewAdapter.setSearchResult(item)
+                    viewAdapter.setSearchResult(filteredItems)
 
                     Handler(Looper.getMainLooper()).postDelayed({
                         binding?.rvSearchResult?.visibility = View.VISIBLE
@@ -95,7 +97,6 @@ class SearchFragment : Fragment() {
                     }, 500)
                 } else {
                     if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
-                        //Memberitahukan bahwa tugas sudah selesai dijalankan
                         EspressoIdlingResource.decrement()
                     }
 
