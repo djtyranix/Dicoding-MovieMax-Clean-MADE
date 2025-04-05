@@ -36,6 +36,7 @@ interface ApiService {
     suspend fun searchWithString(
         @Query("api_key") api_key: String,
         @Query("query") query: String,
+        @Query("include_adult") include_adult: Boolean,
         @Query("page") page: Int
     ): SearchResponse
 

@@ -14,6 +14,7 @@ import com.nixstudio.moviemax.core.data.entities.utils.reviews.ReviewsResponse
 import com.nixstudio.moviemax.core.data.sources.remote.DiscoverMovieResultsItem
 import com.nixstudio.moviemax.core.data.sources.remote.DiscoverTvResultsItem
 import com.nixstudio.moviemax.core.domain.model.*
+import kotlinx.coroutines.flow.filter
 
 object DataMapper {
     fun mapMovieEntityToMovie(it: MovieEntity) = Movie(
@@ -48,7 +49,7 @@ object DataMapper {
         lastAirDate = it.lastAirDate,
     )
 
-    fun mapCombinedEntityListToCombinedList(input: List<CombinedResultEntity>) = input.map {
+    fun mapCombinedEntityListToCombinedList(input: List<CombinedResultEntity>) = input.filter { !it.isAdult }.map {
         Combined(
             overview = it.overview,
             title = it.title,

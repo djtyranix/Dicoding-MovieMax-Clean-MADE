@@ -1,6 +1,7 @@
 package com.nixstudio.moviemax.views.settings
 
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.nixstudio.moviemax.R
 import com.nixstudio.moviemax.databinding.SettingsActivityBinding
@@ -25,14 +26,16 @@ class SettingsActivity : AppCompatActivity() {
 
         setSupportActionBar(binding!!.homeToolbar.toolbarHome)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finishAfterTransition()
+            }
+        })
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
         return true
-    }
-
-    override fun onBackPressed() {
-        finishAfterTransition()
     }
 }

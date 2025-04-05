@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.flow
 
 class RemoteDataSource(private val api: ApiService) {
     private val apiKey = Secrets().getApiKey("com.nixstudio.moviemax")
-    private val includeAdult = true
+    private val includeAdult = false
     private val sortBy = "popularity.desc"
     private val appendToResponse = "credits,reviews"
 
@@ -47,7 +47,7 @@ class RemoteDataSource(private val api: ApiService) {
 
     fun searchFromString(string: String, page: Int): Flow<List<CombinedResultEntity>> = flow {
         try {
-            val response = api.searchWithString(apiKey, string, page)
+            val response = api.searchWithString(apiKey, string, includeAdult, page)
             val dataArray = response.results
 
             if (!dataArray.isNullOrEmpty()) {

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
@@ -54,32 +55,27 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        if (navHostFragment.childFragmentManager.backStackEntryCount == 0) {
-            if (doubleBackToExitOnce) {
-                finishAfterTransition()
-                return
-            }
-
-            this.doubleBackToExitOnce = true
-
-            Toast.makeText(
-                this,
-                resources.getString(R.string.exit_confirmation),
-                Toast.LENGTH_SHORT
-            ).show()
-
-            Handler(Looper.getMainLooper()).postDelayed({
-                kotlin.run { doubleBackToExitOnce = false }
-            }, 2000)
-        } else {
-            super.onBackPressed()
+    private fun handleDoubleBackToExit() {
+        if (doubleBackToExitOnce) {
+            finishAfterTransition()
             return
         }
+
+        this.doubleBackToExitOnce = true
+
+        Toast.makeText(
+            this,
+            resources.getString(R.string.exit_confirmation),
+            Toast.LENGTH_SHORT
+        ).show()
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            kotlin.run { doubleBackToExitOnce = false }
+        }, 2000)
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
         return false
     }
 

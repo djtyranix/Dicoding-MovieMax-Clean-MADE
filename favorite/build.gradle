@@ -9,15 +9,11 @@ plugins {
 apply from: '../shared_dependencies.gradle'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 35
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.nixstudio.moviemax.favorite"
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -25,7 +21,6 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            consumerProguardFiles 'lib-proguard-rules.txt'
             ndk {
                 debugSymbolLevel 'SYMBOL_TABLE'
             }
@@ -35,6 +30,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    namespace 'com.nixstudio.moviemax.favorite'
 }
 
 dependencies {

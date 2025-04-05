@@ -9,15 +9,15 @@ plugins {
 apply from: '../shared_dependencies.gradle'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    compileSdk 35
+    buildToolsVersion '35.0.0'
 
     defaultConfig {
         applicationId "com.nixstudio.moviemax"
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 5
-        versionName '1.03'
+        targetSdkVersion 35
+        versionCode 6
+        versionName '1.1'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -50,6 +50,7 @@ android {
         unitTests.returnDefaultValues = true
     }
     dynamicFeatures = [':favorite']
+    namespace 'com.nixstudio.moviemax'
 }
 
 dependencies {

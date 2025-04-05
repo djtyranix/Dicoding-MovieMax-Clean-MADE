@@ -11,8 +11,9 @@
         <item name="colorSecondaryVariant">@color/blue_500</item>
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/toolbar_gradient_color_left
-        </item>
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
+        <item name="android:statusBarColor">?attr/toolbar_gradient_color_left</item>
+        <item name="android:windowTranslucentStatus">false</item>
         <!-- Customize your theme here. -->
         <item name="cardview_bg">@color/bg_dark</item>
         <item name="text_color_primary">@color/text_dark</item>

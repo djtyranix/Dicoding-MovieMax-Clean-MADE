@@ -15,9 +15,9 @@ dependencies {
 
 //    GLIDE
     implementation "com.github.bumptech.glide:glide:$glide_version"
-    implementation 'androidx.preference:preference-ktx:1.1.1'
+    implementation 'androidx.preference:preference-ktx:1.2.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.preference:preference-ktx:1.1.1'
+    implementation 'androidx.preference:preference-ktx:1.2.1'
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
 
 //    RECYCLER VIEW
@@ -47,8 +47,9 @@ dependencies {
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
 //    KOTLIN COROUTINES
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1'
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1"
 
 //    CIRCLE IMAGE VIEW
     implementation 'de.hdodenhof:circleimageview:3.1.0'
@@ -63,6 +64,6 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 
 //    SECURITY
-    implementation "net.zetetic:android-database-sqlcipher:4.4.0"
-    implementation "androidx.sqlite:sqlite-ktx:2.1.0"
+    implementation "net.zetetic:android-database-sqlcipher:4.5.4"
+    implementation "androidx.sqlite:sqlite-ktx:2.4.0"
 }

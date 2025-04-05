@@ -6,6 +6,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class CombinedResultEntity(
+    @field:SerializedName("adult")
+    val isAdult: Boolean = true,
 
     @field:SerializedName("overview")
     val overview: String? = null,
